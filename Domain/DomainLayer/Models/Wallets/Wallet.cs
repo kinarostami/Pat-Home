@@ -1,5 +1,5 @@
 ﻿using System;
-//using DomainLayer.Models.Users;
+using DomainLayer.Models.Users;
 
 namespace DomainLayer.Models.Wallets;
 
@@ -17,8 +17,8 @@ public class Wallet : BaseEntity
     public DateTime? PaymentDate { get; set; }
 
 
-    //public User User { get; set; }
- 
+    public User User { get; set; }
+
 }
 public enum WalletType
 {

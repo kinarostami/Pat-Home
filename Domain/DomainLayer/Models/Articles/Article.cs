@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +24,5 @@ public class Article : BaseEntity
     public long Visit { get; set; }
     public DateTime DateReals { get; set; }
 
-    //public User User { get; set; }
+    public User User { get; set; }
 }

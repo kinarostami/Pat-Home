@@ -1,4 +1,7 @@
-﻿namespace DomainLayer.Models.Articles;
+﻿using DomainLayer.Models.Users;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DomainLayer.Models.Articles;
 
 public class ArticleComment : BaseEntity
 {
@@ -8,6 +11,6 @@ public class ArticleComment : BaseEntity
 
     public Article Article { get; set; }
 
-    //[ForeignKey("UserId")]
-    //public User User { get; set; }
+    [ForeignKey("UserId")]
+    public User User { get; set; }
 }

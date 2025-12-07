@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,7 +15,7 @@ public class Ticket : BaseEntity
     public string TicketBody { get; set; }
     public TicketStatus Status { get; set; }
 
-    //public User User { get; set; }
+    public User User { get; set; }
     public ICollection<TicketMessage> TicketMessages { get; set; }
 }
 public enum TicketStatus

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,8 +15,8 @@ public class ProductComment : BaseEntity
     public string Text { get; set; }
     public long? AnswerdId { get; set; }
 
-    //[ForeignKey("UserId")]
-    //public User User { get; set; }
+    [ForeignKey("UserId")]
+    public User User { get; set; }
     public Product Product { get; set; }
     [ForeignKey("AnswerId")]
     public ICollection<ProductComment> CourseComments { get; set; }

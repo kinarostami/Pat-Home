@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DomainLayer.Models.Orders;
+using DomainLayer.Models.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,14 +26,14 @@ public class Product : BaseEntity
     public ProductStatus Status { get; set; }
 
     #region Relations
-    //public User User { get; set; }
+    public User User { get; set; }
     public ProductGroup MainGroup { get; set; }
     public ProductGroup ParentGroup { get; set; }
     public ProductGroup SubParentGroup { get; set; }
     public ICollection<ProductGallery> Galleries { get; set; }
     public ICollection<ProductComment> Comments { get; set; }
     public ICollection<ProductSpecifications> Specifications { get; set; }
-    //public ICollection<OrderDetail> Details { get; set; }
+    public ICollection<OrderDetail> Details { get; set; }
 
     #endregion
 }
