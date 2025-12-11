@@ -9,7 +9,7 @@ namespace DomainLayer.Models.Products;
 public  class ProductGallery : BaseEntity
 {
     public long ProductId { get; set; }
-    public string ImageaName { get; set; }
+    public string ImageName { get; set; }
 
     public Product Product { get; set; }
 }

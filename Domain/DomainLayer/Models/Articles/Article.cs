@@ -25,4 +25,7 @@ public class Article : BaseEntity
     public DateTime DateReals { get; set; }
 
     public User User { get; set; }
+    public ArticleGroup MainGroup { get; set; }
+    public ArticleGroup ParentGroup { get; set; }
+    public ICollection<ArticleComment> ArticleComments { get; set; }
 }

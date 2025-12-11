@@ -9,7 +9,7 @@ namespace DomainLayer.Models.Products;
 public class ProductGroup : BaseEntity
 {
     public string GroupTitle { get; set; }
-    public string GroupeImage { get; set; }
+    public string GroupImage { get; set; }
     public long? ParentId { get; set; }
 
     public ICollection<ProductGroup> SubGroups { get; set; }

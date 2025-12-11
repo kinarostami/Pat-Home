@@ -13,7 +13,7 @@ public class ProductComment : BaseEntity
     public long UserId { get; set; }
     public long ProductId { get; set; }
     public string Text { get; set; }
-    public long? AnswerdId { get; set; }
+    public long? AnswerId { get; set; }
 
     [ForeignKey("UserId")]
     public User User { get; set; }
