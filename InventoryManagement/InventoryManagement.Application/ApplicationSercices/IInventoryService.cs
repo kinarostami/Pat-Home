@@ -14,7 +14,7 @@ public interface IInventoryService
     Task DecreaseInventory(DecreaseInventoryCommand command);
     Task DeCreaseInventoryWithoutSave(DecreaseInventoryCommand command);
     Task IncreaseInventory(IncreaseInventoryCommand command);
-    Task<long> GetAvalibaleProducts();
+    List<long> GetAvalibaleProducts();
 
     Task<List<InventoryDto>> GetProductInventories(long productId);
     Task<InventoryDto> GetById(long id);

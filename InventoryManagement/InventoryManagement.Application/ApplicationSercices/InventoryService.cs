@@ -1,6 +1,7 @@
 ﻿using InventoryManagement.Application.DTOs;
 using InventoryManagement.Domain.Models;
 using InventoryManagement.Domain.Models.InventoryAgg;
+using InventoryManagement.Infrastructure.Persistent.EF.Context;
 
 namespace InventoryManagement.Application.ApplicationSercices;
 
@@ -41,7 +42,7 @@ public class InventoryService : IInventoryService
         await _inventoryRepository.SaveChanges();
     }
 
-    public Task<long> GetAvalibaleProducts()
+    public List<long> GetAvalibaleProducts()
     {
         return _context.Inventories.Where(i => i.Count > 1).Select(r => r.ProductId).ToList();
     }
