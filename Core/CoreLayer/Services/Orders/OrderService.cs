@@ -8,6 +8,8 @@ using DomainLayer.Models.Orders;
 using DomainLayer.Models.Products;
 using DomainLayer.Models.Users;
 using DomainLayer.Models.Wallets;
+using InventoryManagement.Application.ApplicationSercices;
+using InventoryManagement.Application.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,11 +25,13 @@ public class OrderService : BaseService, IOrderService
     private readonly IEmailService _email;
     private readonly IWalletService _wallet;
     private readonly INotificationService _notification;
-    public OrderService(AppDbContext context, IEmailService email, IWalletService wallet, INotificationService notification) : base(context)
+    private readonly IInventoryService _inventory;
+    public OrderService(AppDbContext context, IEmailService email, IWalletService wallet, INotificationService notification, IInventoryService inventory) : base(context)
     {
         _email = email;
         _wallet = wallet;
         _notification = notification;
+        _inventory = inventory;
     }
 
     public async Task<Tuple<AddToShopCart, int>> AddToShopCart(AddProductToCartDto productModel)
@@ -292,7 +296,7 @@ public class OrderService : BaseService, IOrderService
         order.Status = OrderStatus.پرداخت_شده;
         order.PaymentDate = DateTime.Now;
         ManageWallet(order);
-        //await DecreaseInventory(order);
+        await DecreaseInventory(order);
         AddPointForUser(order);
         await Save();
         try
@@ -493,19 +497,19 @@ public class OrderService : BaseService, IOrderService
         };
         Insert(userPoint);
     }
-    //private async Task DecreaseInventory(Order order)
-    //{
-    //    foreach (var detail in order.Details)
-    //    {
-    //        await _inventory.DeCreaseInventoryWithoutSave(new DecreaseInventoryCommand()
-    //        {
-    //            Count = detail.Count,
-    //            Id = detail.InventoryId
-    //        });
-    //    }
+    private async Task DecreaseInventory(Order order)
+    {
+        foreach (var detail in order.Details)
+        {
+            await _inventory.DeCreaseInventoryWithoutSave(new DecreaseInventoryCommand()
+            {
+                Count = detail.Count,
+                Id = detail.InventoryId
+            });
+        }
 
-    //    await _inventory.SaveChange();
-    //}
+        await _inventory.SaveChange();
+    }
     private void ManageWallet(Order order)
     {
         if (order.WalletAmount > 0)

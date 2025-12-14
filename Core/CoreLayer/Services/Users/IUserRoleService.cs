@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using DomainLayer.Enums;
-using DomainLayer.Models.Roles;
+﻿using DomainLayer.Models.Roles;
 
 namespace CoreLayer.Services.Users
 {

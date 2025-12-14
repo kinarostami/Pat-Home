@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataLayer.Context;
-using DomainLayer.Enums;
+﻿using DataLayer.Context;
 using DomainLayer.Models.Roles;
 using DomainLayer.Models.Users;
 using Microsoft.EntityFrameworkCore;

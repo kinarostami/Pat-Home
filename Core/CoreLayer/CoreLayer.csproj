@@ -22,5 +22,6 @@
 	  <ProjectReference Include="..\..\Common\Common.Application\Common.Application.csproj" />
 	  <ProjectReference Include="..\..\Data\DataLayer\DataLayer.csproj" />
 	  <ProjectReference Include="..\..\Domain\DomainLayer\DomainLayer.csproj" />
+	  <ProjectReference Include="..\..\InventoryManagement\InventoryManagement.Application\InventoryManagement.Application.csproj" />
 	</ItemGroup>
 </Project>

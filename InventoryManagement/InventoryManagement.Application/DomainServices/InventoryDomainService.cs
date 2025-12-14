@@ -1,5 +1,6 @@
 ﻿using InventoryManagement.Domain;
 using InventoryManagement.Domain.Models;
+using InventoryManagement.Infrastructure.Persistent.EF.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;

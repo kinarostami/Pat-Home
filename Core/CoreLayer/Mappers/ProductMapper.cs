@@ -1,7 +1,6 @@
 ﻿using CoreLayer.DTOs.Shop;
-using DataLayer.Migrations;
 using DomainLayer.Models.Products;
-using InventoryManagement.Application.ApplicationServices.Inventories;
+using InventoryManagement.Application.ApplicationSercices;
 
 namespace CoreLayer.Mappers
 {

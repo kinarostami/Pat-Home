@@ -8,6 +8,7 @@ using DataLayer.Context;
 using DomainLayer.Models.Banners;
 using DomainLayer.Models.Products;
 using DomainLayer.Models.Sliders;
+using InventoryManagement.Application.ApplicationSercices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using static CoreLayer.Services.Products.IProductService;
@@ -46,7 +47,7 @@ public class ProductService : BaseService, IProductService
         }
         if (isAvailable)
         {
-            var availableProducts = _inventoryService.GetAvailableProducts();
+            var availableProducts = _inventoryService.GetAvalibaleProducts();
             result = result.Where(r => availableProducts.Contains(r.Id));
         }
 
