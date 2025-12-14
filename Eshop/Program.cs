@@ -1,4 +1,5 @@
 using DataLayer;
+using InventoryManagement.Configuration;
 using Microsoft.Extensions.Configuration;
 using System;
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 DataBootstrapper.ConfigData(builder.Services);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+InventoryManagementBootstrapper.Init(builder.Services, connectionString);
 var app = builder.Build();
 
 

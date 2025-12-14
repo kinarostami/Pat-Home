@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\CoreLayer\CoreLayer.csproj" />
     <ProjectReference Include="..\Data\DataLayer\DataLayer.csproj" />
+    <ProjectReference Include="..\InventoryManagement\InventoryManagement.Configuration\InventoryManagement.Configuration.csproj" />
   </ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="CookieManager" Version="2.0.1" />
+		<PackageReference Include="EPPlus" Version="8.4.0" />
+		<PackageReference Include="EPPlus.Core" Version="8.4.0" />
+		<PackageReference Include="GemBox.Spreadsheet" Version="2025.12.105" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0-preview3.25342.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
 			<PrivateAssets>all</PrivateAssets>
@@ -20,5 +28,11 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="6.1.0" />
+		<PackageReference Include="Quartz.Extensions.Hosting" Version="3.15.1" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+		<PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
 	</ItemGroup>
 </Project>

@@ -1,51 +1,83 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+<html dir="rtl" lang="fa-IR">
+
+<!-- Mirrored from mahdghanon.ir/pet-home/pet-home/Index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 07:31:07 GMT -->
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Eshop</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Eshop.styles.css" asp-append-version="true" />
+    <title>صفحه اصلی - فروشگاه</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1">
+    @await RenderSectionAsync("Meta", false)
+    <link href="Css/Main.css" rel="stylesheet" />
+    <link href="Css/Menu.css" rel="stylesheet" />
+    <link href="Css/Style.css" rel="stylesheet" />
+    <link href="Css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="Css/owl.theme.min.css" rel="stylesheet" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Eshop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+
+<body class="rtl">
+    <div class="main_wrap">
+        <div class="of-site-mask"></div>
+    
+        <div class="off-canvas-wrap ">
+            <div class="close-off-canvas-wrap">
+                <a href="#" id="of-close-off-canvas">
+                    <svg class="mt-3" width="12" height="12" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 3L18.9706 19.9706" stroke="black" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M19.0874 2.47266L2.11684 19.4432" stroke="black" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="off-canvas-inner">
+                <div id="of-mobile-nav" class="mobile-menu-wrap">
+                        <div class="d-block text-center my-3">
+                            <a href="Index.html" class="current py-2">
+                                <img src="Img/logo.svg" />
+                            </a>
+                        </div> 
+                    <ul class="mobile-menu">
+                        <li class="current-menu-item">
+                            <a href="Index.html">صفحه اصلی</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <li class="current-menu-item">
+                            <a href="shop.html">محصولات</a>
+                        </li>
+                        <li class="current-menu-item">
+                            <a href="gallery.html">گالری</a>
+                        </li>
+                        <li class="current-menu-item">
+                            <a href="blog.html">وبلاگ</a>
+                        </li>
+                        <li class="current-menu-item">
+                            <a href="about-us.html">درباره ما</a>
+                        </li>      
+                        <li class="current-menu-item">
+                            <a href="contact-us.html">تماس با ما</a>
                         </li>
                     </ul>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
+
+        @await RenderSectionAsync("Header", false)
+        <partial name="SideBar/_SideBar"/>
+
+        <div class="clearfix"></div>
+
+    @RenderBody()
+
+        <partial name="Footer/_Footer"/>
+    
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Eshop - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script src="Js/jquery.min.js"></script>
+    <script src="Js/bootstrap.min.js"></script>
+    <script src="Js/my-script.js"></script>
+    <script src="Js/owl.carousel.js"></script>
+    <script src="Js/custom.js"></script>
+    <partial name="_RequestResult" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

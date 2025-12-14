@@ -1,0 +1,62 @@
+﻿<div class="col-12 col-md-4 col-lg-4">
+    <ul class="page-nav pl-0">
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="Edit"?"active-link":null))" href="/Profile/Edit">
+                <i class="lni lni-pencil mr-2 ml-2"></i>
+                ویرایش اطلاعات
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="ChangePassword"?"active-link":null))" href="/Profile/ChangePassword">
+                <i class="lni lni-lock-alt mr-2 ml-2"></i>
+                تغییر کلمه عبور
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="Wallet"?"active-link":null))" href="/Profile/Wallet">
+                <i class="lni lni-wallet mr-2 ml-2"></i>
+                کیف پول
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+        <li>
+
+            <a class="@((ViewData["Selected"].ToString()=="orders"?"active-link":null))" href="/Profile/Orders">
+                <i class="lni lni-shopping-basket mr-2 ml-2"></i>
+                سفارشات
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="addresses"?"active-link":null))" href="/Profile/Addresses">
+                <i class="fadeIn animated bx bx-flag mr-2 ml-2"></i>
+                آدرس ها
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+       
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="Notifications"?"active-link":null))" href="/Profile/Notifications">
+                <i class="lni lni-alarm lni-tada-effect mr-2 ml-2"></i>
+                اطلاعیه ها
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="Tickets"?"active-link":null))" href="/Profile/Tickets">
+                <i class="fa fa-send-o mr-2 ml-2"></i>
+                تیکت ها
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+        <li>
+            <a class="@((ViewData["Selected"].ToString()=="points"?"active-link":null))" href="/Profile/points">
+                <img  src="/global/svg/bee.svg" style="width: 21px;margin-left: 10px"/>
+                زنبور ها
+                <i class="lni lni-chevron-left"></i>
+            </a>
+        </li>
+    </ul>
+</div>
