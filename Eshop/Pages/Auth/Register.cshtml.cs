@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Eshop.Pages.Auth;
 
-[ValidateAntiForgeryToken]
+//[ValidateAntiForgeryToken]
 public class RegisterModel : PageUtil
 {
     private readonly IUserService _userService;
@@ -27,11 +27,11 @@ public class RegisterModel : PageUtil
 
     public async Task<IActionResult> OnPost()
     {
-        if (!await _googleRecaptcha.IsSatisfy())
-        {
-            ModelState.AddModelError("", "اعتبارسنجی captcha نا موفق بود!");
-            return Page();
-        }
+        //if (!await _googleRecaptcha.IsSatisfy())
+        //{
+        //    ModelState.AddModelError("", "اعتبارسنجی captcha نا موفق بود!");
+        //    return Page();
+        //}
         if (!ModelState.IsValid)
         {
             return Page();

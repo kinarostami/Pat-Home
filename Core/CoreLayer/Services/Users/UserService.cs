@@ -229,8 +229,8 @@ public class UserService : BaseService, IUserService
             throw new Exception("اطلاعات ناقص است");
         if (registerModel.Password != registerModel.RePassword)
             throw new Exception("کلمه های عبور یکسان نیستند");
-        if (await IsUserExist(registerModel.PhoneNumber))
-            throw new Exception("شماره تلفن وارد شده قبلا استفاده شده است");
+        //if (await IsUserExist(registerModel.PhoneNumber))
+        //    throw new Exception("شماره تلفن وارد شده قبلا استفاده شده است");
 
         var user = new User()
         {

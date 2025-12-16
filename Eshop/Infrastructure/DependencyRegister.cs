@@ -33,7 +33,7 @@ namespace Eshop.Infrastructure
 {
     public class DependencyRegister
     {
-        public void Register(IServiceCollection services)
+        public static void Register(IServiceCollection services)
         {
             services.AddScoped<UserCompleted>();
             services.AddScoped<IZarinPalService, ZarinPalService>();

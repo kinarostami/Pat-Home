@@ -14,7 +14,7 @@
 	<ItemGroup>
 		<PackageReference Include="CookieManager" Version="2.0.1" />
 		<PackageReference Include="EPPlus" Version="8.4.0" />
-		<PackageReference Include="EPPlus.Core" Version="8.4.0" />
+		<!--<PackageReference Include="EPPlus.Core" Version="8.4.0" />-->
 		<PackageReference Include="GemBox.Spreadsheet" Version="2025.12.105" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.0-preview3.25342.7" />

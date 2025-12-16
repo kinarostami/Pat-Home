@@ -1,4 +1,5 @@
 using DataLayer;
+using Eshop.Infrastructure;
 using InventoryManagement.Configuration;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,6 +12,8 @@ builder.Services.AddRazorPages();
 DataBootstrapper.ConfigData(builder.Services);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 InventoryManagementBootstrapper.Init(builder.Services, connectionString);
+DependencyRegister.Register(builder.Services);
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 
