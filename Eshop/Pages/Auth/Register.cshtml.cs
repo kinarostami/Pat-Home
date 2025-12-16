@@ -27,11 +27,11 @@ public class RegisterModel : PageUtil
 
     public async Task<IActionResult> OnPost()
     {
-        //if (!await _googleRecaptcha.IsSatisfy())
-        //{
-        //    ModelState.AddModelError("", "اعتبارسنجی captcha نا موفق بود!");
-        //    return Page();
-        //}
+        if (!await _googleRecaptcha.IsSatisfy())
+        {
+            ModelState.AddModelError("", "اعتبارسنجی captcha نا موفق بود!");
+            return Page();
+        }
         if (!ModelState.IsValid)
         {
             return Page();
