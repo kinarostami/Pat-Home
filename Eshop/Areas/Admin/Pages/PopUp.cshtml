@@ -1,0 +1,54 @@
+﻿@page
+@model Eshop.Areas.Admin.Pages.PopUpModel
+@{
+    ViewData["title"] = "PopUp";
+    ViewData["selected"] = "popUp";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post">
+            @Html.HiddenFor(m => m.PopUp.Id)
+            <textarea asp-for="PopUp.Body" class="form-control" id="full_cheditor"></textarea>
+            <hr/>
+            <div class="row p-4">
+                <div class="col-md-6 form-input">
+                    <p>متن دکمه :</p>
+                    <input type="text" asp-for="PopUp.LinkText" placeholder="متن دکمه" class="form-control"/>
+                </div>
+                <div class="col-md-6 form-input">
+                    <p> لینک دکمه :</p>
+                    <input type="url" asp-for="PopUp.LinkUrl" placeholder="لینک دکمه" class="form-control"/>
+                </div>
+                <div class="col-md-6 form-input">
+                    <label for="PopUp_IsShow">
+                        نمایش داده شود
+                    </label>
+                    <input type="checkbox" asp-for="PopUp.IsShow" value="true"/>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+
+</section>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="/admin/ckeditor4/ckeditor/ckeditor.js"></script>
+    <script src="/admin/dist/js/cheditorConfig.js"></script>
+}

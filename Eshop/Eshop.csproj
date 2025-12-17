@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\admin\dist\css\.DS_Store" />
+    <None Include="wwwroot\admin\dist\img\.DS_Store" />
+    <None Include="wwwroot\admin\dist\js\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\CoreLayer\CoreLayer.csproj" />
     <ProjectReference Include="..\Data\DataLayer\DataLayer.csproj" />
     <ProjectReference Include="..\InventoryManagement\InventoryManagement.Configuration\InventoryManagement.Configuration.csproj" />

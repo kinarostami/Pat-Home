@@ -1,0 +1,149 @@
+﻿@page
+@using DomainLayer.Enums
+@model Eshop.Areas.Admin.Pages.SiteSettingsModel
+@{
+    ViewData["title"] = "تنظیمات  سایت";
+    ViewData["selected"] = "SiteSettings";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+
+    <form method="post" enctype="multipart/form-data">
+        @Html.HiddenFor(s => s.SiteSetting.Id)
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#activity" data-toggle="tab">مشخصات اصلی</a></li>
+                <li><a href="#social" data-toggle="tab">شبکه های اجتماعی</a></li>
+                <li><a href="#seo" data-toggle="tab">سئو</a></li>
+                <li><a href="#contact" data-toggle="tab">اطلاعات پشتیبانی</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="active tab-pane" id="activity">
+                    <div class="row">
+                        <div class="col-md-6 form-input">
+                            <label>نام سایت (فارسی) : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.PersianSitName" placeholder="نام سایت (فارسی)" class="form-control" />
+                            <span asp-validation-for="SiteSetting.PersianSitName"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label>نام سایت (انگلیسی) : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.EnglishSitName" placeholder="نام سایت (انگلیسی) " class="form-control" />
+                            <span asp-validation-for="SiteSetting.EnglishSitName"></span>
+                        </div>
+                        <div class="col-md-12 form-input">
+                            <label>آدرس سایت :</label>
+                            <input type="url" asp-for="SiteSetting.BaseSiteUrl" placeholder="شماره تماس پشتیبانی" class="form-control" />
+                            <span asp-validation-for="SiteSetting.BaseSiteUrl"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="social">
+                    <div class="row">
+                        <div class="col-md-6 form-input">
+                            <label>اینستاگرام :</label>
+                            <input type="url" asp-for="SiteSetting.Instagram" placeholder="آدرس صفحه اینستاگرام" class="form-control" />
+                            <span asp-validation-for="SiteSetting.Instagram"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label>تلگرام :</label>
+                            <input type="url" asp-for="SiteSetting.Telegram" placeholder="آدرس کانال تلگرام" class="form-control" />
+                            <span asp-validation-for="SiteSetting.Telegram"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label>لینکدین :</label>
+                            <input type="url" asp-for="SiteSetting.LinkDin" placeholder="آدرس صفحه لینکدین" class="form-control" />
+                            <span asp-validation-for="SiteSetting.LinkDin"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label>تویتر :</label>
+                            <input type="url" asp-for="SiteSetting.Twitter" placeholder="آدرس  تویتر" class="form-control" />
+                            <span asp-validation-for="SiteSetting.Twitter"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane" id="seo">
+                    <div class="row">
+                        <div class="col-md-6 form-input">
+                            <label> عنوان سایت (فروشگاه) : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.ShopSiteTitle" placeholder="<title></title>" class="form-control" />
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label> عنوان سایت (مگ) : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.MagSiteTitle" placeholder="<title></title>" class="form-control" />
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label> MetaDescription (فروشگاه) : <span class="text-danger">*</span><span class="badge counter1"></span></label>
+                            <textarea id="meta_des1" asp-for="SiteSetting.ShopDescription" placeholder="متادیسکریپشن صفحه اصلی" class="form-control"></textarea>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label> MetaDescription (مگ): <span class="text-danger">*</span><span class="badge counter2"></span></label>
+                            <textarea id="meta_des2" asp-for="SiteSetting.MagDescription" placeholder="متادیسکریپشن صفحه اصلی" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane" id="contact">
+                    <div class="row">
+                        <div class="col-md-6 form-input">
+                            <label> تلفن ثابت : </label>
+                            <input type="text" asp-for="SiteSetting.TelePhone" placeholder="تلفن ثابت شرکت" class="form-control" />
+                            <span asp-validation-for="SiteSetting.TelePhone"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label> شماره پشتیبانی :</label>
+                            <input type="text" id="number_input" asp-for="SiteSetting.PhoneNumber" placeholder="شماره تماس پشتیبانی" class="form-control" />
+                            <span asp-validation-for="SiteSetting.PhoneNumber"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label>ایمیل پشتیبانی : <span class="text-danger">*</span></label>
+                            <input type="email" asp-for="SiteSetting.Email" placeholder="ایمیل پشتیبانی سایت" class="form-control" />
+                            <span asp-validation-for="SiteSetting.Email"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label>پسورد ایمیل : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.EmailPassword" placeholder="ایمیل پشتیبانی سایت" class="form-control" />
+                            <span asp-validation-for="SiteSetting.EmailPassword"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label> Email Smtp Server (مثال : smtp.gmail.com) : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.EmailSmtpServer" placeholder="ایمیل پشتیبانی سایت" class="form-control" />
+                            <span asp-validation-for="SiteSetting.EmailSmtpServer"></span>
+                        </div>
+                        <div class="col-md-6 form-input">
+                            <label> Email Smtp Port (مثال : 587) : <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="SiteSetting.EmailSmtpPort" placeholder="ایمیل پشتیبانی سایت" class="form-control" />
+                            <span asp-validation-for="SiteSetting.EmailSmtpPort"></span>
+                        </div>
+
+                        <div class="col-md-12 form-input">
+                            <label> آدرس پستی (شرکت ، محل کار) :</label>
+                            <textarea asp-for="SiteSetting.Address" placeholder="آدرس پستی" class="form-control"></textarea>
+                            <span asp-validation-for="SiteSetting.Address"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+    </form>
+</section>
+
+@section Scripts
+{
+    <script src="/admin/ckeditor4/ckeditor/ckeditor.js"></script>
+    <script src="/admin/dist/js/cheditorConfig.js"></script>
+    <partial name="Shared/_ValidationScriptsPartial" />
+}

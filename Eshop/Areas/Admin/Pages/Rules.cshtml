@@ -1,0 +1,41 @@
+﻿@page
+@model Eshop.Areas.Admin.Pages.RulesModel
+@{
+    ViewData["title"] = "قوانین سایت";
+    ViewData["selected"] = "rules";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#main" data-toggle="tab">قوانین سایت</a></li>
+        </ul>
+        <form method="post">
+            @Html.HiddenFor(b=>b.SiteRules.Id)
+            <div class="tab-content">
+                <div class="active tab-pane" id="main">
+                    <textarea id="description-3" placeholder="قوانین اصلی سایت" asp-for="SiteRules.MainRule"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-4 mr-4 mb-3">ثبت اطلاعات</button>
+        </form>
+
+    </div>
+
+</section>
+
+@section Scripts
+{
+    <script src="/admin/ckeditor4/ckeditor/ckeditor.js"></script>
+    <script src="/admin/dist/js/cheditorConfig.js"></script>
+}
