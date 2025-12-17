@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["title"]</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="~/dashboard/dist/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="~/dashboard/dist/css/rtl.css">
+    <link rel="stylesheet" href="~/dashboard/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/dashboard/bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/dashboard/dist/css/AdminLTE.css">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="~/dashboard/dist/css/customize-adminlte.css">
+    <link rel="stylesheet" href="~/dashboard/dist/css/skins/skin-green.min.css">
+    <link rel="stylesheet" href="~/dashboard/bower_components/select2/dist/css/select2.css" />
+    <link rel="stylesheet" href="~/dashboard/dist/css/persian-datepicker-0.4.5.min.css" />
+    @await RenderSectionAsync("meta", false)
+</head>
+
+<body class="fixed sidebar-mini sidebar-mini-expand-feature skin-black skin-green">
+    <div class="loading">
+        <img src="/Assets/svg/loading.svg" alt="loading..." />
+    </div>
+    <div class="wrapper">
+        <partial name="_header" />
+        <partial name="_rightMenu" />
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <footer class="main-footer">
+            <strong> © برنامه نویسی شده با <i class="fa fa-heart text-danger"></i> توسط تیم <a target="_blank" href="https://www.instagram.com/barnamenevisan.esf/">برنامه نویسان اصفهان</a></strong>
+        </footer>
+    </div>
+    <script src="~/dashboard/bower_components/jquery/dist/jquery.js"></script>
+
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/dashboard/bower_components/bootstrap/bootstrap.min.js"></script>
+    <script src="~/dashboard/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/dashboard/dist/js/adminlte.min.js"></script>
+    <script src="/global/js/sweetalert.min.js"></script>
+    <script src="~/dashboard/dist/js/custom.js"></script>
+    <script src="~/dashboard/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/dashboard/dist/js/adminCustom.js"></script>
+    <script>
+    var messages = new ShowMessage(@appcontext.IsSuccess.ToString().ToLower(), @appcontext.IsError.ToString().ToLower());
+    messages.handlerMessage();
+    </script>
+    @await RenderSectionAsync("Scripts", false)
+</body>
+
+</html>

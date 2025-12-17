@@ -2,6 +2,7 @@
 @using Eshop.Infrastructure
 @model Eshop.Pages.Auth.LoginModel
 @{
+    Layout = null;
     ViewData["title"] = "ورود به حساب";
 }
 
@@ -9,7 +10,7 @@
 
 <!-- Mirrored from mahdghanon.ir/pet-home/pet-home/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 07:31:27 GMT -->
 <head>
-    <title>صفحه ورود - دمو 1</title>
+    <title>@ViewData["title"]</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 , maximum-scale=1">
@@ -192,7 +193,9 @@
         <script src="/Js/bootstrap.min.js"></script>
         <script src="/Js/my-script.js"></script>
         <script src="/Js/custom.js"></script>
-
+        <partial name="Shared/_ValidationScriptsPartial" />
+        <partial name="Shared/_RequestResult" />
+        <partial name="Shared/_reCaptchaJs" />
 </body>
 
 <!-- Mirrored from mahdghanon.ir/pet-home/pet-home/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Nov 2024 07:31:28 GMT -->
