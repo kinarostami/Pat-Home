@@ -1,0 +1,48 @@
+﻿@page "{parentId}"
+@model Eshop.Areas.Admin.Pages.Articles.Group.AddSubModel
+@{
+    ViewData["title"] = "افزودن زیر گروه";
+    ViewData["selected"] = "ArticleGroups";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/Admin/Articles"><i class="fa fa-newspaper-o"></i>مقالات</a></li>
+        <li><a href="/Admin/Articles/Group">دسته بندی ها</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>عنوان دسته بندی :</label>
+                        <input type="text" asp-for="ArticleGroup.GroupTitle" placeholder="عنوان" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>عنوان دسته بندی (انگلیسی) :</label>
+                        <input type="text" asp-for="ArticleGroup.EnglishTitle" placeholder="عنوان انگلیسی" class="form-control" />
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> MetaDescription : <small>توضیحاتی برای موتورهای جستوجو</small> <span class="badge counter">0</span></label>
+                        <textarea asp-for="ArticleGroup.Description" id="meta_des" class="form-control"></textarea>
+                        <span asp-validation-for="ArticleGroup.Description"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+
+</section>
+

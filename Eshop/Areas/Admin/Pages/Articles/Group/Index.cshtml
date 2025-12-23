@@ -1,0 +1,75 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Articles.Group.IndexModel
+@{
+    ViewData["title"] = "مدیریت گروه ها";
+    ViewData["selected"] = "ArticleGroups";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/Admin/Articles"><i class="fa fa-newspaper-o"></i>مقالات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/Admin/Articles/Group/Add">
+        <i class="fa fa-plus"></i>
+        افزودن گروه
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered bg-white text-center">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>زیر گروه</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ArticleGroups.Where(g => g.ParentId == null))
+                    {
+                        <tr>
+                            <td>@item.GroupTitle (@item.EnglishTitle)</td>
+                            <td>
+                                @if (Model.ArticleGroups.Any(g => g.ParentId == item.Id))
+                                {
+
+                                    @foreach (var sub in Model.ArticleGroups.Where(g => g.ParentId == item.Id))
+                                    {
+                                        <ul class=" table-bordered" style="box-shadow: 0 0 5px rgba(27, 27, 27, 0.12);padding-right: 5px;">
+                                            <li>
+                                                <div class="text-right" style="padding: 5px;margin: 5px">
+                                                    @sub.GroupTitle (@sub.EnglishTitle)
+                                                    <a href="javascript:void(0)" onclick="DeleteArticleGroup(@sub.Id)" class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                    <a href="/Admin/Articles/Group/Edit/@sub.Id" class="btn btn-sm btn-info">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                    }
+                                }
+                            <td>
+                                <a href="javascript:void(0)" onclick="DeleteArticleGroup(@item.Id)" class="btn btn-sm btn-danger  no-margin">حذف</a>
+                                <a href="/Group/Edit/@item.Id" class="btn btn-sm bg-blue no-margin">ویرایش</a>
+                                <a href="/Group/AddSub/@item.Id" class="btn btn-sm bg-green no-margin">افزودن زیر گروه</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+

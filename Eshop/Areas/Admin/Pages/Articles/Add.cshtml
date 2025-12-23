@@ -1,0 +1,149 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Article.AddModel
+@{
+    ViewData["title"] = "افزودن مقاله";
+    ViewData["selected"] = "Articles";
+    bool subjectExist = TempData["SubjectExist"] != null;
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Articles">مدیریت مقالات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>Url : <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="عنوان انگلیسی برای آدرس صفحه" asp-for="ArticleModel.Url" class="form-control" />
+                        <span asp-validation-for="ArticleModel.Url"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>تاریخ انتشار :</label>
+                        <div class="input-group date ">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="stDate" autocomplete="off" asp-for="ArticleModel.DateRelease" class="form-control pull-right">
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>عنوان : <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="عنوان" asp-for="ArticleModel.Title" class="form-control" />
+                        <span asp-validation-for="ArticleModel.Title"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>کلمات کلیدی : <small>کلمات را با - از هم جدا کنید</small> <span class="text-danger">*</span></label>
+                        <input type="text" placeholder="مثال-مثال2-مثال3-مثال4" asp-for="ArticleModel.Tags" class="form-control" />
+                        <span asp-validation-for="ArticleModel.Tags"></span>
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> MetaDescription : <small>توضیحاتی برای موتور جستوجو</small> <span class="badge counter">0</span></label>
+                        <textarea asp-for="ArticleModel.MetaDescription" id="meta_des" class="form-control"></textarea>
+                        <span asp-validation-for="ArticleModel.MetaDescription"></span>
+                    </div>
+                    <div class="col-md-6 form-select">
+                        <label> دسته بندی اصلی : <span class="text-danger">*</span></label>
+                        <div class="form-group">
+                            <select class="form-control" asp-for="ArticleModel.GroupId">
+                                <option value="0">انتخاب کنید</option>
+                                @foreach (var item in Model.MainGroups)
+                                {
+                                    <option value="@item.Id">@item.GroupTitle</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ArticleModel.GroupId"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-select">
+                        <label> دسته بندی دوم :</label>
+                        <div class="form-group">
+                            <select class="form-control" id="select_" asp-for="ArticleModel.ParentGroupId">
+                                <option value="0">انتخاب کنید</option>
+                                @if (Model.SubGroups != null)
+                                {
+                                    @foreach (var item in Model.SubGroups)
+                                    {
+                                        <option value="@item.Id">@item.GroupTitle</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="ArticleModel.ParentGroupId"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-select">
+                        <label> پست ویژه :</label>
+                        <div class="form-group">
+                            <select class="form-control" id="select_1" asp-for="ArticleModel.IsSpecial">
+                                <option value="true">بله</option>
+                                <option value="false">خیر</option>
+                            </select>
+                            <span asp-validation-for="ArticleModel.IsSpecial"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-select">
+                        <label> وضعیت :</label>
+                        <div class="form-group">
+                            <select class="form-control" id="select_2" asp-for="ArticleModel.IsShow">
+                                <option value="true">فعال</option>
+                                <option value="false">غیر فعال</option>
+                            </select>
+                            <span asp-validation-for="ArticleModel.IsShow"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> متن مقاله : <span class="text-danger">*</span></label>
+                        <textarea asp-for="ArticleModel.Body" id="full_cheditor" class="form-control"></textarea>
+                        <span asp-validation-for="ArticleModel.Body"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> تصویر اصلی : <span class="text-danger">*</span></label>
+                        <input accept="image/*" required="" data-val="true" data-val-required="لطفا یک عکس وارد کنید" type="file" class="form-control" id="image_selector" asp-for="ArticleModel.ImageSelector" />
+                        <span asp-validation-for="ArticleModel.ImageSelector"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <img id="image_target" src=" " style="width: 100%; height: 250px" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+@section Scripts
+{
+    <script src="/admin/ckeditor4/ckeditor/ckeditor.js"></script>
+    <script src="/admin/dist/js/cheditorConfig.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    @if (subjectExist)
+    {
+        <script>
+            Error("عنوان شما تکراری است", "عنوان وارد شده تکراری است لطفا عنوان دیگری وارد کنید");
+        </script>
+    }
+    <script src="/admin/dist/js/persian-date-0.1.8.min.js"></script>
+    <script src="/admin/dist/js/persian-datepicker-0.4.5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#stDate').pDatepicker({
+                format: 'YYYY/MM/D',
+                initialValue: false
+            });
+        });
+    </script>
+}
+
