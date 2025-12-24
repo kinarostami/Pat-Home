@@ -1,0 +1,45 @@
+﻿@page "{id}"
+@using DomainLayer.Models.Orders
+@model Eshop.Areas.Admin.Pages.ShippingCosts.EditModel
+@{
+    ViewData["title"] = "ویرایش";
+    ViewData["selected"] = "shipping_costs";
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a asp-page="Index"><i class="fa fa-dashboard"></i>هزینه ارسال سفارشات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-primary">
+        <form method="post">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>وزن سفارش :</label>
+                        <select asp-for="ShippingCost.Type" id="select_">
+                            <option value="@ShippingCostType.NimKilo">از 0 تا 500 گرم</option>
+                            <option value="@ShippingCostType.YekKilo">از 501 گرم تا  1 کیلو</option>
+                            <option value="@ShippingCostType.YekKiloVa500Gram">بین یک کیلو تا یک کیلو و 500 گرم</option>
+                            <option value="@ShippingCostType.YekKiloVa500Gram_Ta_DokiloVa500Gram">بین یک کیلو و 500 گرم تا 2 کیلو و 500 گرم</option>
+                            <option value="@ShippingCostType.DoKiloVa500Gram">2 کیلو و 500 گرم</option>
+                            <option value="@ShippingCostType.SeKilo">3 کیلو به بالا</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>مبلغ : <small>تومان</small></label>
+                        <input type="text" asp-for="ShippingCost.Cost" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+</section>

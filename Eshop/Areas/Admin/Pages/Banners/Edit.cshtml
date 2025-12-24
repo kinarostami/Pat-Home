@@ -1,0 +1,54 @@
+﻿@page "{bannerId}"
+@using DomainLayer.Enums
+@model Eshop.Areas.Admin.Pages.Banners.EditModel
+@{
+    ViewData["title"] = "ویرایش بنر";
+    ViewData["selected"] = "Users";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Banners"><i class="fa fa-dashboard"></i>مدیریت بنر ها</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>Url : </label>
+                        <input asp-for="Banner.Url" required="" type="url" placeholder="آدرس اینترنتی" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>وضعیت : </label>
+                        <select asp-for="Banner.IsActive" id="select_">
+                            <option value="true">فعال</option>
+                            <option value="false">غیر فعال</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> عکس : </label>
+                        <input type="file" accept="image/*" name="imageFile" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

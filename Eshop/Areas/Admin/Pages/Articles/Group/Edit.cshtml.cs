@@ -1,12 +1,9 @@
-﻿using System.Threading.Tasks;
-using CoreLayer.Services.Articles;
-using Common.Application.SecurityUtil;
-using CoreLayer.Utilities;
-using DomainLayer.Enums;
+﻿using CoreLayer.Utilities;
 using DomainLayer.Models.Articles;
 using Eshop.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using DomainLayer.Models.Roles;
+using CoreLayer.Services.Articles;
 
 namespace Eshop.Areas.Admin.Pages.Articles.Group
 {
@@ -15,9 +12,9 @@ namespace Eshop.Areas.Admin.Pages.Articles.Group
     [ValidateAntiForgeryToken]
     public class EditModel : PageUtil
     {
-        private readonly IArticleService _article;
+        private readonly IArticleServices _article;
 
-        public EditModel(IArticleService article)
+        public EditModel(IArticleServices article)
         {
             _article = article;
         }

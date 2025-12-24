@@ -1,0 +1,76 @@
+﻿@page "{contactId}"
+@using Common.Application.DateUtil
+@model Eshop.Areas.Admin.Pages.ContactUs.ShowModel
+@{
+    ViewData["title"] = "نمایش پیام " + Model.ContactUs.Subject;
+    ViewData["selected"] = "ContactUs";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>وضعیت : <b>@((Model.ContactUs.IsSeenAdmin?"پاسخ داده شده":"در انتظار پاسخ"))</b></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Contactus"><i class="fa fa-envelope"></i>پیام های پشتیبانی</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <div class="box-body ">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>نام : <b>@Model.ContactUs.FullName</b></p>
+                </div>
+                <div class="col-md-6">
+                    <p>ایمیل : <b>@Model.ContactUs.Email</b></p>
+                </div>
+                <div class="col-md-6">
+                    <p>شماره تماس : <b>@Model.ContactUs.PhoneNumber</b></p>
+                </div>
+                <div class="col-md-6">
+                    <p> تاریخ ثبت : <b>@Model.ContactUs.CreationDate.ToPersianDate("ds dd ms Y")</b></p>
+                </div>
+                <div class="col-md-12">
+                    <p>  عنوان پیام : <b>@Model.ContactUs.Subject</b></p>
+                </div>
+                <hr class="col-md-12" />
+                <div class="col-md-12">
+                    <p>پیام : <b>@Model.ContactUs.MessageBody</b></p>
+                </div>
+                <div class="col-md-12">
+                    @if (Model.ContactUs.IsSeenAdmin)
+                    {
+                        <hr class="mb-3"/>
+                        <p><b class="mb-4">پاسخ : </b></p>
+                        @Html.Raw(Model.ContactUs.Answer)
+                    }
+                    else
+                    {
+                        <form method="post">
+                            <b>پاسخ : </b>
+                            <textarea asp-for="ContactUs.Answer" id="description" class="form-control">
+
+                            </textarea>
+                            <button  type="submit" class="btn btn-success mt-2">ارسال پاسخ</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+@section Scripts
+{
+    @if (!Model.ContactUs.IsSeenAdmin)
+    {
+        <script src="/assets/ckeditor5/build/ckeditor.js"></script>
+        <script src="/admin/dist/js/cheditorConfig.js"></script>
+    }
+}

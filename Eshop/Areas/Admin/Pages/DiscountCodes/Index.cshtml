@@ -1,0 +1,71 @@
+﻿@page "{handler?}"
+@using Common.Application.DateUtil
+@model Eshop.Areas.Admin.Pages.DiscountCodes.IndexModel
+@{
+    ViewData["title"] = "کد های تخفیف";
+    ViewData["selected"] = "discountCodes";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/Admin/DiscountCodes/Add">
+        <i class="fa fa-plus"></i>
+        افزودن کد تخفیف
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>مقدار تخفیف</th>
+                        <td>تعداد کد</td>
+                        <td>تعداد استفاده شده</td>
+                        <th>تاریخ شروع</th>
+                        <th>تاریخ پایان</th>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.DiscountCodes)
+                    {
+                        <tr>
+                            <td>@item.CodeTitle</td>
+                            <td>
+                                @if (item.Percentage == null)
+                                {
+                                    <span>@item.Price?.ToString("#,0") تومان</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Percentage%</span>
+                                }
+                            </td>
+                            <td>@item.Count</td>
+                            <td>
+                                @item.UsedCount
+                            </td>
+                            <td>@item.StartDate.ToPersianDate()</td>
+                            <td>@item.EndDate.ToPersianDate()</td>
+                            <td>
+                                <a class="btn btn-sm btn-danger  no-margin" onclick="deleteCode(@item.Id)"><i class="fa fa-trash"></i></a>
+                                <a href="/Admin/DiscountCodes/Edit/@item.Id" class="btn btn-sm bg-blue no-margin"><i class="fa fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

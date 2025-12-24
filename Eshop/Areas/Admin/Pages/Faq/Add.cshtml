@@ -1,0 +1,41 @@
+﻿@page
+@model Eshop.Areas.Admin.Pages.Faq.AddModel
+@{
+    ViewData["title"] = "ثبت عنوان جدید";
+    ViewData["selected"] = "faq";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Faq"><i class="fa fa-dashboard"></i>سوالات متداول</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>عنوان :</label>
+                        <input type="text" asp-for="Faq.FaqTitle" placeholder="عنوان" class="form-control" />
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+
+

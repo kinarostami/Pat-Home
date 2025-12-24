@@ -1,0 +1,83 @@
+﻿@page
+@model Eshop.Areas.Admin.Pages.ShippingCosts.IndexModel
+@{
+    ViewData["title"] = "هزینه ارسال";
+    ViewData["selected"] = "shipping_costs";
+    var counter = 1;
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" asp-page="Add">
+        <i class="fa fa-plus"></i>
+        افزودن نقش
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>عنوان</th>
+                        <td>مبلغ</td>
+                        <th>
+                            عملیات
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShippingCosts)
+                    {
+                        <tr>
+                            <td>@counter</td>
+                            <td>
+                                @switch (item.Type)
+                                {
+                                    case DomainLayer.Models.Orders.ShippingCostType.NimKilo:
+                                        <span>از 0 تا 500 گرم</span>
+                                        break;
+                                    case DomainLayer.Models.Orders.ShippingCostType.YekKilo:
+                                        <span> از 501 گرم تا  1 کیلو</span>
+                                        break;
+                                    case DomainLayer.Models.Orders.ShippingCostType.YekKiloVa500Gram:
+                                        <span> یک کیلو به بالا تا یک کیلو و 500 گرم</span>
+                                        break;
+                                    case DomainLayer.Models.Orders.ShippingCostType.YekKiloVa500Gram_Ta_DokiloVa500Gram:
+                                        <span> بین یک کیلو و 500 گرم تا دو کیلو</span>
+                                        break;
+                                    case DomainLayer.Models.Orders.ShippingCostType.DoKiloVa500Gram:
+                                        <span>دو کیلو و 500 گرم</span>
+
+                                        break;
+                                    case DomainLayer.Models.Orders.ShippingCostType.SeKilo:
+                                        <span>سه کیلو به بالا</span>
+
+                                        break;
+                                }
+                            </td>
+                            <td>@item.Cost.ToString("#,0") تومان</td>
+                            <td>
+                                <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">ویرایش</a>
+                            </td>
+                        </tr>
+
+                        counter += 1;
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+

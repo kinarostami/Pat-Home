@@ -1,0 +1,63 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Faq.IndexModel
+@{
+    ViewData["title"] = "سوالات متداول";
+    ViewData["selected"] = "faq";
+}
+@section meta
+{
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/Admin/Faq/Add">
+        <i class="fa fa-plus"></i>
+        افزودن عنوان جدید
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>سوالات</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                   @foreach (var item in Model.Faqs)
+                   {
+                       <tr>
+                          
+                           <td>
+                               @item.FaqTitle
+                           </td>
+                           <td>@item.Children.Count</td>
+                           <td>
+                               <a href="/Admin/Faq/Details/@item.Id" class="btn btn-sm btn-info">سوالات</a>
+                               <a onclick="deleteFaq(@item.Id)" class="btn btn-sm btn-danger no-margin"><i class="fa fa-trash"></i></a>
+                               <a href="/Admin/Faq/Edit/@item.Id" class="btn btn-sm bg-blue  no-margin"><i class="fa fa-edit"></i></a>
+                           </td>
+                       </tr>
+                   }
+                    @if (Model.Faqs.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4">موردی برای نمایش وجود ندارد !</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+

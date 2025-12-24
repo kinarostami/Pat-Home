@@ -1,0 +1,106 @@
+﻿@page
+@model Eshop.Areas.Admin.Pages.Newsletters.AddModel
+@{
+    ViewData["title"] = "ارسال خبرنامه";
+    ViewData["selected"] = "newsLetter";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+       <small>تعداد اعضا : @ViewData["MemberCount"]</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Newsletters"><i class="fa fa-newspaper-o"></i>خبرنامه</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-primary">
+            <form method="post">
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 form-input">
+                                <label>عنوان :</label>
+                                <input type="text" asp-for="Newsletter.Subject" required="" placeholder="عنوان پیام" class="form-control" />
+                            </div>
+                            <div class="col-md-12">
+                                <label> متن پیام :</label>
+                                <textarea asp-for="Newsletter.Body" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">ارسال</button>
+                </div>
+            </form>
+    </div>
+
+</section>
+@section Scripts
+{
+    <script src="/dashboard/ckeditor5/build/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#Newsletter_Body'),
+                {
+                    toolbar: {
+                        items: [
+                            'heading',
+                            'fontFamily',
+                            'fontSize',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'underline',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'highlight',
+                            'removeFormat',
+                            'specialCharacters',
+                            '|',
+                            'pageBreak',
+                            'imageInsert',
+                            'blockQuote',
+                            'insertTable',
+                            'undo',
+                            'redo'
+                        ]
+                    },
+                    language: 'fa',
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative',
+                            'imageStyle:full',
+                            'imageStyle:side'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [
+                            'tableColumn',
+                            'tableRow',
+                            'mergeTableCells',
+                            'tableCellProperties',
+                            'tableProperties'
+                        ]
+                    },
+                    simpleUpload: {
+                        uploadUrl: '/Upload/newsLetter'
+                    },
+                    licenseKey: '',
+                })
+            .then(editor => {
+                window.editor = editor;
+            });
+
+    </script>
+}

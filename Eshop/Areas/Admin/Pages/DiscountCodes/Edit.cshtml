@@ -1,0 +1,85 @@
+﻿@page "{codeId}"
+@using Common.Application.DateUtil
+@model Eshop.Areas.Admin.Pages.DiscountCodes.EditModel
+@{
+    ViewData["title"] = "ویرایش کد تخفیف";
+    ViewData["selected"] = "discountCodes";
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a asp-page="Index"><i class="fa fa-percent"></i> کد های تخفیف </a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-primary">
+        <form method="post" id="discount_form">
+            @Html.HiddenFor(d => d.OldCodeTitle)
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12 form-input">
+                        <label> عنوان :</label>
+                        <input asp-for="DiscountCode.CodeTitle" required="" type="text" placeholder="عنوان کد را وارد کنید (فقط انگلیسی)" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> مقدار تخفیف (تومان) : <small>یا مقدار را وارد کنید یا درصد </small></label>
+                        <input asp-for="DiscountCode.Price" type="number" placeholder="مبلغ تخفیف" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> درصد تخفیف %: </label>
+                        <input asp-for="DiscountCode.Percentage" max="100" type="number" placeholder="درصد تخفیف" class="form-control" />
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> تعداد کد : </label>
+                        <input asp-for="DiscountCode.Count" type="number" placeholder="تعداد" class="form-control" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 form-input">
+                        <label>تاریخ شروع : </label>
+                        <div class="input-group date ">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="tarikh" name="stDate" value="@Model.DiscountCode.StartDate" class="form-control pull-right" style="border-radius: 0 !important">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 form-input">
+                        <label>تاریخ پایان : </label>
+                        <div class="input-group date ">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="tarikh2" value="@Model.DiscountCode.EndDate" name="endDate" class="form-control pull-right" style="border-radius: 0 !important">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script src="~/assets/js/jquery.validate.min.js"></script>
+    <script src="~/assets/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/dashboard/dist/js/persian-date-0.1.8.min.js"></script>
+    <script src="/dashboard/dist/js/persian-datepicker-0.4.5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tarikh').pDatepicker({
+                format: 'YYYY/MM/D',
+            });
+            $('#tarikh2').pDatepicker({
+                format: 'YYYY/MM/D',
+            });
+        });
+    </script>
+}
+

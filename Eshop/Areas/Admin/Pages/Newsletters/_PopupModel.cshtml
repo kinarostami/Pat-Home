@@ -1,0 +1,21 @@
+﻿@model DomainLayer.Models.Newsletters.Newsletter
+@Html.HiddenFor(s => s.Id)
+<div class="modal-body">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-12 form-input">
+                <label>عنوان :</label>
+                <input type="text" disabled="disabled" asp-for="Subject" placeholder="عنوان پیام" class="form-control" />
+            </div>
+            <div class="col-md-12">
+                <label> متن پیام :</label>
+                <br />
+                @Html.Raw(Model.Body)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+</div>
+

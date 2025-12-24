@@ -1,0 +1,167 @@
+﻿@page "{handler?}"
+@using Common.Application.DateUtil
+@model Eshop.Areas.Admin.Pages.Newsletters.IndexModel
+@{
+}
+@{
+    ViewData["title"] = "خبر نامه";
+    ViewData["selected"] = "newsLetter";
+    var isNotMember = TempData["MemberIsZero"] != null;
+    var isEmailNotExist = TempData["EmailNotFound"] != null;
+
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            <strong>تعداد عضو : <span class="text-green" style="font-size:15px">@Model.Newsletters.MemberCounts.ToString("#,0")</span></strong>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a href="/Admin/NewsLetters/Add" class="btn btn-success btn-flat mt-2 mb-4">
+        <i class="fa fa-plus"></i>
+        افزودن پیام
+    </a>
+    <div class="box box-border custom-shadow">
+        <input type="hidden" id="startDate" asp-for="Newsletters.StartDate" />
+        <input type="hidden" id="endDate" asp-for="Newsletters.EndDate" />
+        <form method="get" id="filter">
+            <input type="hidden" name="pageId" id="pageId" asp-for="Newsletters.CurrentPage" />
+
+            <div class="box-header with-border">
+                <h3 class="box-title">فیلتر</h3>
+                <div class="box-tools pull-right">
+                    <a href="/Admin/ContactUs" class="btn btn-sm btn-danger btn-flat">
+                        حذف
+                        <i class="fa fa-close">
+                        </i>
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary btn-flat">
+                        فیلتر
+                        <i class="fa fa-search">
+                        </i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="">
+                <div class="table-filter">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 form-input">
+                            <label>عنوان :</label>
+                            <input type="text" name="subject" class="form-control" asp-for="Newsletters.Subject" placeholder="عنوان پیام" />
+                        </div>
+                        <div class="col-lg-4 col-md-6 form-input">
+                            <label>از تاریخ :</label>
+                            <div class="input-group date ">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" id="stDate" autocomplete="off" asp-for="Newsletters.StartDate" name="startDate" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 form-input">
+                            <label>تا تاریخ :</label>
+                            <div class="input-group date ">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" id="enDate" autocomplete="off" asp-for="Newsletters.EndDate" name="endDate" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-body -->
+    </div>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>تاریخ ارسال</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Newsletters.Newsletters)
+                    {
+                        <tr>
+                            <td>@item.Subject</td>
+                            <td>@item.CreateDate.ToPersianDateTime()</td>
+                            <td>
+                                <a onclick="showNewslettersPage(@item.Id)" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary">نمایش</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Newsletters.EntityCount < 1)
+                    {
+                        <tr>
+                            <td colspan="4">موردی برای نمایش وجود ندارد</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Paginat" model="@Model.Newsletters" />
+    </div>
+
+</section>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="content"></div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @if (isEmailNotExist)
+    {
+        <script>
+            Error("ایمیل یافت نشد", "ایمیل سرور را در قسمت تنضیمات سایت وارد کنید.");
+        </script>
+    }
+    @if (isNotMember)
+    {
+        <script>
+            Error("خبرنامه هیچ عضوی ندارد");
+        </script>
+    }
+    <script src="/dashboard/dist/js/persian-date-0.1.8.min.js"></script>
+    <script src="/dashboard/dist/js/persian-datepicker-0.4.5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#stDate').pDatepicker({
+                format: 'YYYY/MM/D',
+                initialValue: false
+            });
+            $('#enDate').pDatepicker({
+                initialValue: false,
+                format: 'YYYY/MM/D',
+            });
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            if (!startDate) {
+                $("#stDate").val("");
+            }
+            if (!endDate) {
+                $("#enDate").val("");
+            }
+        });
+    </script>
+}

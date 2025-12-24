@@ -1,0 +1,78 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Banners.IndexModel
+@{
+    ViewData["title"] = "مدیریت بنر ها";
+    ViewData["selected"] = "Banner";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="Add">
+        <i class="fa fa-plus"></i>
+        افزودن بنر
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>عکس</th>
+                        <th>url</th>
+                        <th>وضعیت</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Banners)
+                    {
+                        var url = item.Url;
+                        if (url.Length > 50)
+                        {
+                            url = url.Substring(0, 45) + "...";
+                        }
+
+                        <tr>
+                            <td>
+                                <img style="width: 150px; height: 110px;" src="/ShopAssets/images/Banners/@item.ImageName" />
+                            </td>
+                            <td>
+                                <a target="_blank" href="@item.Url">@url</a>
+                            </td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <label class="label label-success">فعال</label>
+                                }
+                                else
+                                {
+                                    <label class="label label-danger">غیرفعال</label>
+                                }
+                            </td>
+                            <td>
+                                <a onclick="deleteBanner(@item.Id)" class="btn btn-sm btn-danger no-margin"><i class="fa fa-trash"></i></a>
+                                <a href="Edit/@item.Id" class="btn btn-sm bg-blue no-margin"><i class="fa fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Banners.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="6">موردی برای نمایش وجود ندارد !</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>

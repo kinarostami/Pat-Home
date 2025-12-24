@@ -1,0 +1,112 @@
+﻿@page "{ticketId}/{handler?}"
+@using Common.Application.DateUtil
+@using Common.Application.UserUtil
+@model Eshop.Areas.Admin.Pages.Tickets.ShowModel
+@{
+    ViewData["title"] = Model.TicketModel.TicketTitle;
+    ViewData["selected"] = "tickets";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            <strong> تاریخ ثبت : <span class="text-green" style="font-size:15px">@Model.TicketModel.CreateDate.ToPersianDate("ds dd ms Y")</span></strong>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین </a></li>
+        <li><a href="/Admin/Tickets"><i class="fa fa-send-o"></i> تیکت ها </a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-success direct-chat direct-chat-primary">
+        <div class="box-header with-border">
+            <h5 class="m-0">
+                وضعیت تیکت :
+                @switch (Model.TicketModel.Status)
+                {
+                    case TicketStatus.Replied:
+                        <span class="badge badge-success mb-1" style="background-color: #269619;color: white !important">پاسخ داده شده</span>
+                        break;
+                    case TicketStatus.Waiting_For_Reply:
+                        <span class="badge mb-1" style="background-color:#337ab7">در انتظار پاسخ</span>
+                        break;
+                    case TicketStatus.Close:
+                        <span class="badge badge-dark bg-red mb-1">بسته شده</span>
+                        break;
+                }
+                @if (Model.TicketModel.Status != TicketStatus.Close)
+                {
+                    <a class="btn btn-danger btn-sm" onclick="closeTicket(@Model.TicketModel.Id)" style="float: left">بستن تیکت</a>
+                }
+            </h5>
+        </div>
+        <div class="box-body">
+            <div class="row m-0 p-0">
+                <div class="col-12 info shadow pl-0 pr-0">
+                    <div class="ticket-Body">
+                        <div class="chat">
+                            <div class="chat-y">
+                                <div class="chat-you">
+                                    <p>@Model.TicketModel.TicketBody</p>
+                                    <span>@Model.TicketModel.CreateDate.ToPersianDate()</span>
+                                </div>
+                            </div>
+                        </div>
+                        @foreach (var item in Model.TicketModel.TicketMessages)
+                        {
+                            @if (item.UserId == User.GetUserId())
+                            {
+
+                                <div class="chat">
+                                    <div class="chat-m">
+                                        <div class="chat-me">
+                                            <p>@item.MessageBody</p>
+                                            <span>@item.CreateDate.ToPersianDate()</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="chat">
+                                    <div class="chat-y">
+                                        <div class="chat-you">
+                                            <label>@item.User.Name @item.User.Family</label>
+                                            <p>@item.MessageBody</p>
+                                            <span>@item.CreateDate.ToPersianDate()</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+
+
+                    </div>
+                    @if (Model.TicketModel.Status == TicketStatus.Close)
+                    {
+                        <div class="send-message text-danger p-1">
+                            <p> <b>امکان ثبت پیام در این تیکت وجود ندارد.</b></p>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <form class="send-message " method="post">
+                            <input type="text" required name="message" class="form-control" placeholder="متن پیام">
+                            <button type="submit" class="btn btn-sm font-weight-bolder">
+                                ارسال
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>

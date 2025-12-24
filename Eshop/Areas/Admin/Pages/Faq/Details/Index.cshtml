@@ -1,0 +1,65 @@
+﻿@page "{faqId}/{handler?}"
+@using Common.Application
+@model Eshop.Areas.Admin.Pages.Faq.Details.IndexModel
+@{
+    ViewData["title"] = "سوالات";
+    ViewData["selected"] = "faq";
+}
+@section meta
+{
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Faq"><i class="fa fa-dashboard"></i>سوالات متداول</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/Admin/Faq/Details/Add/@ViewData["faqId"]">
+        <i class="fa fa-plus"></i>
+        افزودن بخش جدید
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>آیکن</th>
+                        <th>عنوان</th>
+                        <th>متن</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.FaqDetails)
+                    {
+                        var converted = item.Description.ConvertHtmlToText();
+                        var des = (converted.Length > 70) ? converted.Substring(0, 60) + "..." : converted;
+                        <tr>
+                            <td>
+                                <i style="font-size: 22px" class="@item.Icon"></i>
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @des
+                            </td>
+                            <td>
+                                <a onclick="deleteFaqDetail(@item.Id)" class="btn btn-sm btn-danger no-margin"><i class="fa fa-trash"></i></a>
+                                <a href="/Admin/Faq/Details/Edit/@item.FaqId/@item.Id" class="btn btn-sm bg-blue  no-margin"><i class="fa fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
