@@ -1,0 +1,119 @@
+﻿@page
+@using CoreLayer.Services.Wallets
+@using DomainLayer.Enums
+@model Eshop.Areas.Admin.Pages.Users.IndexModel
+@{
+    ViewData["title"] = "مدیریت کاربران";
+    ViewData["selected"] = "Users";
+}
+@inject IWalletService _Wallet;
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            <strong>تعداد کاربران : <span class="text-green" style="font-size:15px">@Model.UsersModel.EntityCount.ToString("#,0")</span></strong>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-border custom-shadow">
+        <form method="get" id="filter">
+            <input type="hidden" name="pageId" id="pageId" value="@Model.UsersModel.CurrentPage" />
+
+            <div class="box-header with-border">
+                <h3 class="box-title">فیلتر</h3>
+                <div class="box-tools pull-right">
+                    <a href="/Admin/Users" class="btn btn-sm btn-danger btn-flat m-0">
+                        حذف
+                        <i class="fa fa-close">
+                        </i>
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-flat">
+                        فیلتر
+                        <i class="fa fa-search">
+                        </i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="">
+                <div class="table-filter">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>شناسه کاربر :</label>
+                            <input placeholder="Name : " type="text" name="userId" asp-for="UsersModel.UserId" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>نام یا نام خانوادگی :</label>
+                            <input placeholder="Name : " type="text" name="nameOrFamily" asp-for="UsersModel.Name" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>ایمیل :</label>
+                            <input placeholder="ایمیل : " type="text" name="email" asp-for="UsersModel.Email" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>شماره تلفن :</label>
+                            <input placeholder="شماره تلفن : " type="number" name="phone" asp-for="UsersModel.Phone" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-body -->
+    </div>
+    <div class="box box-primary">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>ایمیل</th>
+                        <th>تلفن</th>
+                        <th>وضعیت</th>
+                        <th>کیف پول</th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UsersModel.Users)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.Family</td>
+                            <td>@item.Email</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <strong class="label label-success">فعال</strong>
+                                }
+                                else
+                                {
+                                    <strong class="label label-danger">غیر فعال</strong>
+
+                                }
+                            </td>
+                            <td>@_Wallet.BalanceWallet(item.Id).Result.ToString("#,0") تومان</td>
+
+                            <td>
+                                <a class="btn btn-success btn-sm" asp-page="Wallet" asp-route-userId="@item.Id">کیف پول</a>
+                                <a href="/Admin/Users/Edit/@item.Id" class="btn btn-sm bg-blue no-margin"><i class="fa fa-edit"></i></a>
+                                <a href="/Admin/Users/Show/@item.Id" class="btn btn-sm btn-primary no-margin"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <partial name="Shared/_Paginat" model="Model.UsersModel" />
+        </div>
+    </div>
+</section>

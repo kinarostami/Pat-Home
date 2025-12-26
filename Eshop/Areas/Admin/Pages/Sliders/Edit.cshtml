@@ -1,0 +1,57 @@
+﻿@page "{sliderId}"
+@model Eshop.Areas.Admin.Pages.Sliders.EditModel
+@{
+    ViewData["title"] = "ویرایش اسلایدر";
+    ViewData["selected"] = "Sliders";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Sliders"><i class="fa fa-slideshare"></i>مدیریت اسلایدر ها</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>عنوان : </label>
+                        <input asp-for="Slider.Title" type="text" placeholder="عنوان اسلایدر" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>متن : </label>
+                        <input asp-for="Slider.Description" type="text" placeholder="متن اسلایدر" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>Url : <span class="text-danger">*</span></label>
+                        <input asp-for="Slider.Url" required="" type="url" placeholder="آدرس اینترنتی" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>وضعیت : </label>
+                        <select asp-for="Slider.IsActive" id="select_">
+                            <option value="true">فعال</option>
+                            <option value="false">غیر فعال</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> عکس : <span class="text-danger">*</span></label>
+                        <input type="file" accept="image/*" name="sliderFile" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+
+</section>
+

@@ -1,0 +1,136 @@
+﻿@page "{orderId}/{handler?}"
+@using Common.Application
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Orders
+@model Eshop.Areas.Admin.Pages.Orders.ShowModel
+@{
+    ViewData["title"] = " نمایش فاکتور #" + Model.Order.Id;
+    ViewData["selected"] = "productOrders";
+    var address = Model.Order.Address;
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            وضعیت :
+            <b class="text-success">@Model.Order.Status.ToString().Replace("_", " ")</b>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/Orders/Products"><i class="fa fa-dashboard"></i>سفارشات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#order" data-toggle="tab">جزعیات سفارش</a></li>
+            <li><a href="#tab_1" data-toggle="tab">محصولات</a></li>
+            <li><a href="#tab_2" data-toggle="tab">جزئیات ارسال</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="order">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>تاریخ ثبت : <b>@Model.Order.PaymentDate.ToPersianDateTime()</b></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>تعداد محصولات : <b>@Model.Order.ItemCount</b></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p> مشخصات کاربر : <b> <a href="/admin/users/show/@Model.Order.UserId" target="_blank"> نمایش </a> </b></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            تاریخ ارسال : <b>
+                                @if (Model.Order.Status == OrderStatus.ارسال_شده || Model.Order.Status == OrderStatus.تحویل_به_مشتری)
+                                {
+                                    <span>@Model.Order.SendDate.ToPersianDateTime()</span>
+                                }
+                                else
+                                {
+                                    <span>...</span>
+                                }
+                            </b>
+                        </p>
+                    </div>
+                    <hr class="col-md-12" />
+                    <div class="col-md-6">
+                        <p> نوع پست : <b>@Model.Order.SendTypeTitle</b></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p> هزینه ارسال : <b>@Model.Order.ShippingCost.TooMan()</b></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>  قیمت کالاها : <b>@Model.Order.Price.TooMan()</b></p>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Order.DiscountTitle))
+                    {
+                        <div class="col-md-6">
+                            <p>  تخفیف : <b>@Model.Order.GetDiscount.TooMan()</b></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>  کد تخفیف : <b>@Model.Order.DiscountTitle</b></p>
+                        </div>
+                    }
+                    <div class="col-md-6">
+                        <p> جمع کل  : <b>@Model.Order.TotalPrice.TooMan()</b></p>
+                    </div>
+                    @if (Model.Order.ByWallet)
+                    {
+                        <div class="col-md-12 text-center">
+                            <hr />
+
+                            <p class="text-success">  استفاده از کیف پول به <b>مبلغ : @Model.Order.WalletAmount.TooMan()</b></p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="tab-pane" id="tab_1">
+                @if (!Model.Order.IsSend)
+                {
+                    <a onclick="sendProduct(@Model.Order.Id)" class=" btn btn-sm btn-success">محصولات را ارسال کردم</a>
+                }
+                else
+                {
+                    <p>کد رهگیری : <b>@Model.Order.TrackingCode</b></p>
+                }
+                @foreach (var item in Model.Order.Details)
+                {
+                    <div class="p-2 mb-5 mt-3" style="box-shadow: 0 0 3px 0 gray">
+                        <p>
+                            نام محصول :<b><a target="_blank" href="/Product/@item.Product.Id/@item.Product.ProductTitle.Trim().Replace(" ", "-")">@item.Product.ProductTitle - @item.GetWeight()</a></b>
+                        </p>
+                        <p>
+                            تعداد خریداری شده :<b>@item.Count</b>
+                        </p>
+                        <p>
+                            قیمت واحد:<b>@item.Price.TooMan()</b>
+                        </p>
+                        <p>
+                            قیمت  کل :<b>@item.TotalPrice.TooMan()</b>
+                        </p>
+                    </div>
+                }
+            </div>
+            <div class="tab-pane" id="tab_2">
+                @if (address != null)
+                {
+                    <p>نوع پست : <b>@Model.Order.SendTypeTitle</b></p>
+                    <p>نام گیرنده : <b>@address.Name @address.Family</b></p>
+                    <p>استان : <b>@address.Shire</b></p>
+                    <p>شهر : <b>@address.City</b></p>
+                    <p>کد پستی : <b>@address.PostalCode</b></p>
+                    <p>آدرس پستی : <b>@address.Address</b></p>
+                    <p>شماره تماس : <b>@address.Phone</b></p>
+                }
+                else
+                {
+                    <p>آدرسی ثبت نشده!!!</p>
+                    <p>با پشتیبانی سایت درمیان بگذارید</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>

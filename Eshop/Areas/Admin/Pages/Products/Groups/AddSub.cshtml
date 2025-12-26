@@ -1,0 +1,46 @@
+﻿@page "{parentId}"
+@model Eshop.Areas.Admin.Pages.Products.Groups.AddSubModel
+@{
+    ViewData["title"] = "افزودن زیر گروه";
+    ViewData["selected"] = "ProductGroups";
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/Admin/Products"><i class="fa fa-book"></i>محصولات</a></li>
+        <li><a href="/Admin/Products/Groups">دسته بندی ها</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="alert alert-info">
+        <p>  برای آپلود تصویر به این نکات توجه کنید : </p>
+        <p>1 : BackGround=Transparent</p>
+        <p>2 : Width : 80px - Height : 80px</p>
+    </div>
+    <div class="box box-primary">
+        <form method="post" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>عنوان دسته بندی :</label>
+                        <input type="text" asp-for="ProductGroup.GroupTitle" placeholder="عنوان" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> عکس مربوط به دسته بندی :</label>
+                        <input type="file" name="imageFile" accept="image/*" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+
+</section>
+

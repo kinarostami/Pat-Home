@@ -1,0 +1,134 @@
+﻿@page "{handler?}"
+@using DomainLayer.Enums
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Products
+@model Eshop.Areas.Admin.Pages.Products.IndexModel
+@{
+    ViewData["title"] = "مدیریت  محصولات";
+    ViewData["selected"] = "Products";
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>تعداد : @Model.Products.EntityCount.ToString("#,0")</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-border custom-shadow">
+        <form id="filter" method="get">
+            <input type="hidden" name="pageId" id="pageId" value="@Model.Products.CurrentPage" />
+            <div class="box-header with-border">
+                <h3 class="box-title">فیلتر</h3>
+                <div class="box-tools pull-right">
+                    <a href="/Admin/Courses" class="btn btn-sm btn-danger btn-flat">
+                        حذف
+                        <i class="fa fa-close">
+                        </i>
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-flat">
+                        فیلتر
+                        <i class="fa fa-search">
+                        </i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="">
+                <div class="table-filter">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>نام محصول :</label>
+                            <input placeholder="نام محصول ..." asp-for="Products.ProductName" type="text" name="title" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label> لینک کوتاه :</label>
+                            <input placeholder=" لینک کوتاه ..." asp-for="Products.ShortLink" type="text" name="shortLink" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label> دسته بندی :</label>
+                            <input placeholder=" دسته بندی ..." asp-for="Products.GroupTitle" type="text" name="groupTitle" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label> وضعیت :</label>
+                            <select class="form-control" name="status" asp-for="Products.ProductStatus">
+                                <option value="0">انتخاب کنید</option>
+                                <option value="@ProductStatus.Active">فعال</option>
+                                <option value="@ProductStatus.DeActive">غیره فعال</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/admin/Products/Add">
+        <i class="fa fa-plus"></i>
+        افزودن محصول جدید
+    </a>
+    <div class="box box-primary">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <th>عنوان محصول</th>
+                        <th>درصد تخفیف</th>
+                        <th>وضعیت</th>
+                        <td>تعداد فروش</td>
+                        <th>تاریخ ثبت</th>
+                        <td>عملیات</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Products.EntityCount >= 1)
+                    {
+                        foreach (var item in Model.Products.Products)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <a target="_blank" href="/Product/@item.Id/@item.ProductTitle.Trim().Replace(" ", "-")">@item.ProductTitle</a>
+                                </td>
+                                <td>@item.DiscountPercentage%</td>
+                                <td>
+                                    @switch (item.Status)
+                                    {
+                                        case ProductStatus.Active:
+                                            <strong class="label-success label">فعال</strong>
+                                            break;
+
+                                        case ProductStatus.DeActive:
+                                            <strong class="label-danger label">غیر فعال</strong>
+                                            break;
+                                        case ProductStatus.NewRequest:
+                                            <strong class="label label-info">درخواست جدید</strong>
+                                            break;
+                                    }
+                                </td>
+                                <td>@item.Details.Where(d => d.Order.IsFinally).Sum(c => c.Count)</td>
+                                <td>@item.CreationDate.ToPersianDate()</td>
+                                <td>
+                                    <a class="btn btn-success" asp-page="./Inventory/Index" asp-route-productId="@item.Id">انبار</a>
+                                    <a onclick="deleteProducts(@item.Id)" class="btn btn-sm btn-danger btn-flat no-margin"><i class="fa fa-trash"></i></a>
+                                    <a href="/Admin/Products/Edit/@item.Id" class="btn btn-sm bg-blue btn-flat no-margin"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-center" colspan="7">موردی برای نمایش وجود ندارد !</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <partial name="Shared/_Paginat" model="Model.Products" />
+        </div>
+    </div>
+</section>

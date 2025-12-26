@@ -1,0 +1,175 @@
+﻿@page "{userId}"
+@using CoreLayer.Services.Wallets
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Orders
+@model Eshop.Areas.Admin.Pages.Users.ShowModel
+@inject IWalletService _wallet;
+@{
+    ViewData["title"] = $"پروفایل {Model.UserModel.Name} {Model.UserModel.Family}";
+    ViewData["selected"] = "Users";
+    var walletAmount = _wallet.BalanceWallet(Model.UserModel.Id).Result;
+}
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="/img/users/avatar/@Model.UserModel.ImageName" alt="User profile picture">
+                    <h3 class="profile-username text-center">
+                        @Model.UserModel.Name @Model.UserModel.Family
+                    </h3>
+                    <p class="text-muted text-center">
+                        @foreach (var item in Model.UserModel.UserRoles)
+                        {
+                            <span>@item.Role.RoleTitle -</span>
+                        }
+                    </p>
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>کیف پول</b> <a class="pull-left">@walletAmount.ToString("#,0") تومان</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>شناسه کاربر</b> <a class="pull-left">@Model.UserModel.Id#</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>وضعیت</b>
+                            <a class="pull-left">
+                                @if (Model.UserModel.IsActive)
+                                {
+                                    <span class="label label-success">فعال</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-danger">غیرفعال</span>
+                                }
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>شماره تماس</b> <a class="pull-left">@Model.UserModel.PhoneNumber</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>تاریخ ثبت نام</b> <a class="pull-left">@Model.UserModel.CreationDate.ToPersianDate()</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>ایمیل</b> <a class="pull-left">@Model.UserModel.Email</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>شماره معرف</b> <a class="pull-left">@Model.UserModel.Presenter</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#activity" data-toggle="tab">سفارشات</a></li>
+                    <li><a href="#cards" data-toggle="tab">کارت های بانکی</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="activity">
+                        @if (Model.UserModel.Orders.Any())
+                        {
+                            <div class="box">
+                                <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td>#</td>
+                                                <td>قیمت</td>
+                                                <th>تخفیف</th>
+                                                <th>وضعیت</th>
+                                                <th>تعداد محصول</th>
+                                                <td>تاریخ ثبت</td>
+                                            </tr>
+                                            @foreach (var item in Model.UserModel.Orders.Where(c => c.Status != OrderStatus.در_انتظار_پرداخت).Take(8))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <a target="_blank" href="/Admin/Orders/Show/@item.Id">@item.Id</a>
+                                                    </td>
+                                                    <td>@item.TotalPrice.ToString("#,0") ت</td>
+                                                    <td>
+                                                        @((item.GetDiscount).ToString("#,0")) ت
+                                                    </td>
+                                                    <td>
+                                                        @item.Status.ToString().Replace("_", " ")
+                                                    </td>
+                                                    <td>
+                                                        @item.ItemCount
+                                                    </td>
+                                                    <td>
+                                                        @item.CreationDate.ToPersianDate()
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a href="/Admin/Orders/Products?userId=@Model.UserModel.Id">نمایش همه</a>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <p>موردی برای نمایش وجود ندارد !</p>
+                        }
+                    </div>
+                    <div class="tab-pane" id="cards">
+                        @if (Model.UserModel.UserCards.Any())
+                        {
+                            var cardCounter = 1;
+                            <div class="box box-primary">
+                                <div class="box-body table-responsive no-padding">
+                                    <table class="table table-bordered table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <td>#</td>
+                                                <th>شماره کارت</th>
+                                                <th>شماره حساب</th>
+                                                <th>نام بانک</th>
+                                                <th>وضعیت</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var item in Model.UserModel.UserCards)
+                                            {
+                                                <tr>
+                                                    <td>@cardCounter</td>
+                                                    <td>
+                                                        @Convert.ToInt64(item.CardNumber).ToString("####-####-####-####")
+
+                                                    </td>
+                                                    <td>@item.AccountNumber</td>
+                                                    <td>@item.BankName</td>
+                                                    <td>
+                                                        @if (item.IsAccept)
+                                                        {
+                                                            <span class="label label-success">فعال</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="label label-info">درحاال برسی</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+
+                                                cardCounter += 1;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>موردی برای نمایش وجود ندارد !</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

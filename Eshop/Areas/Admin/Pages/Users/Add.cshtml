@@ -1,0 +1,80 @@
+﻿@page
+@model Eshop.Areas.Admin.Pages.Users.AddModel
+@{
+    ViewData["title"] = "افزودن نقش";
+    ViewData["selected"] = "UserRoles";
+}
+@section meta{
+
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/users"><i class="fa fa-user-o"></i>کاربران</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box">
+        <form method="post">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>نام :</label>
+                        <input type="text" placeholder="نام" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>نام خانوادگی :</label>
+                        <input type="number" placeholder="نام خانوادگی" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-select">
+                        <label>نام خانوادگی :</label>
+                        <div class="form-group">
+                            <select class="form-control" id="select_">
+                                <option>1</option>
+                                <option>2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 form-input">
+                        <label>تاریخ</label>
+                        <div class="input-group date ">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="tarikh" class="form-control pull-right" style="border-radius:0 !important">
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label>نام خانوادگی :</label>
+                        <textarea class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+
+@section Scripts{
+    <script src="/admin/dist/js/persian-date-0.1.8.min.js"></script>
+    <script src="/admin/dist/js/persian-datepicker-0.4.5.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#tarikh').pDatepicker({
+                format: 'YYYY/MM/D',
+            });
+
+
+        });
+    </script>
+}

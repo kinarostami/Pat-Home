@@ -1,0 +1,137 @@
+﻿@page "{userId}"
+@using Common.Application.DateUtil
+@using Common.Application
+@using DomainLayer.Models.Wallets
+@model Eshop.Areas.Admin.Pages.Users.WalletModel
+@{
+    ViewData["title"] = "کیف پول";
+    ViewData["selected"] = "Users";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            <strong> موجودی : <span class="text-green" style="font-size:15px">@Model.WalletAmount.SplitNumber() تومان</span></strong>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/UserPanel"><i class="fa fa-dashboard"></i> پنل کاربری</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-success">
+        <div class="box-body">
+            <label>شارژ حساب :</label>
+
+            <form class="row" method="post" asp-page="Wallet">
+                <div class="col-md-6 form-input">
+                    <input type="number" asp-for="Wallet.Amount" class="form-control" placeholder="مبلغ مورد نظر" />
+                </div>
+                <div class="col-md-6 form-input">
+                    <select class="form-control" id="select_" asp-for="Wallet.WalletType">
+                        <option value="@WalletType.برداشت">برداشت از حساب</option>
+                        <option value="@WalletType.واریز">واریز به حساب</option>
+                    </select>
+                </div>
+                <div class="col-md-6 form-input">
+                    <textarea class="form-control" placeholder="توضیحات" asp-for="Wallet.Description"></textarea>
+                </div>
+                <div class="col-md-6 form-input">
+                    <button type="submit" class="btn btn-success btn-block">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="box box-primary">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>مبلغ</th>
+                        <th>نوع</th>
+                        <th>تاریخ</th>
+                        <th>توضیحات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Wallets.EntityCount >= 1)
+                    {
+                        @foreach (var item in Model.Wallets.Wallet)
+                        {
+                            <tr>
+                                <td>@item.Amount.ToString("#,0") تومان</td>
+                                <td>
+                                    @if (item.WalletType == WalletType.واریز)
+                                    {
+                                        <span class="label label-success">
+                                            واریز
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-danger">
+                                            برداشت
+                                        </span>
+                                    }
+                                </td>
+                                <td>@item.PaymentDate.ToPersianDate()</td>
+                                <td>@item.Description</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-center" colspan="4">موردی برای نمایش وجود ندارد !</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.Wallets.PageCount > 1)
+            {
+                <form id="filter">
+                    <input type="hidden" name="pageId" id="pageId" value="@Model.Wallets.CurrentPage" />
+                </form>
+                <div style="padding:10px">
+                    <ul class="pagination" style="display:inline-block">
+                        @if (Model.Wallets.CurrentPage > 1)
+                        {
+                            <li class="paginate_button previous">
+                                <a onclick="changePage('@(Model.Wallets.CurrentPage-1)')" href="#">قبلی</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="paginate_button previous disabled">
+                                <a href="javascript:void(0)">قبلی</a>
+                            </li>
+                        }
+                        @for (var i = Model.Wallets.StartPage; i <= Model.Wallets.EndPage; i++)
+                        {
+                            <li class="paginate_button @((i==Model.Wallets.CurrentPage?"active":""))">
+                                <a onclick="changePage('@i')" href="javascript:void(0)">@i</a>
+                            </li>
+                        }
+                        @if (Model.Wallets.PageCount <= Model.Wallets.CurrentPage)
+                        {
+                            <li class="paginate_button next disabled">
+                                <a href="javascript:void(0)">بعدی</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="paginate_button next">
+                                <a onclick="changePage('@(Model.Wallets.CurrentPage+1)')" href="#">بعدی</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</section>

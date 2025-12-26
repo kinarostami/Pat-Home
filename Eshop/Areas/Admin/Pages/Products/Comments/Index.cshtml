@@ -1,0 +1,136 @@
+﻿@page
+@using Common.Application
+@using Common.Application.DateUtil
+@model Eshop.Areas.Admin.Pages.Products.Comments.IndexModel
+@{
+    ViewData["title"] = "نظرات ثبت شده";
+    ViewData["selected"] = "ProductComments";
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            <strong>تعداد کل : <span class="text-green" style="font-size:15px">@Model.Comments.EntityCount.ToString("#,0")</span></strong>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/products">مدیریت محصولات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-border custom-shadow">
+        <input type="hidden" id="startDate" asp-for="Comments.StartDate" />
+        <input type="hidden" id="endDate" asp-for="Comments.EndDate" />
+        <form method="get" id="filter">
+            <input type="hidden" name="pageId" id="pageId" asp-for="Comments.CurrentPage" />
+
+            <div class="box-header with-border">
+                <h3 class="box-title">فیلتر</h3>
+                <div class="box-tools pull-right">
+                    <a href="/Admin/courses/comments" class="btn btn-sm btn-danger btn-flat">
+                        حذف
+                        <i class="fa fa-close">
+                        </i>
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary btn-flat">
+                        فیلتر
+                        <i class="fa fa-search">
+                        </i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="">
+                <div class="table-filter">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 form-input">
+                            <label>از تاریخ :</label>
+                            <div class="input-group date ">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" id="stDate" autocomplete="off" asp-for="Comments.StartDate" name="startDate" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 form-input">
+                            <label>تا تاریخ :</label>
+                            <div class="input-group date ">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" id="enDate" autocomplete="off" asp-for="Comments.EndDate" name="endDate" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>نام کاربر</th>
+                        <th>متن</th>
+                        <th>عنوان محصول</th>
+                        <th>تاریخ ثبت</th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Comments.Comments)
+                    {
+                        <tr>
+                            <td>@item.User.Name @item.User.Family</td>
+                            <td>@item.Text.ConvertHtmlToText().Subscribe(80)</td>
+                            <td>@item.Product.ProductTitle.Subscribe(50)</td>
+                            <td>@item.CreationDate.ToPersianDateTime()</td>
+                            <td>
+                                <a target="_blank" href="/product/@item.Id/@item.Product.ProductTitle.Trim().Replace(" ","-")#comments" class="btn btn-sm btn-info no-margin">نمایش</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Comments.EntityCount == 0)
+                    {
+                        <tr>
+                            <td colspan="6">موردی برای نمایش وجود ندارد !</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="Shared/_Paginat" model="Model.Comments" />
+
+    </div>
+
+</section>
+@section Scripts
+{
+    <script src="/dashboard/dist/js/persian-date-0.1.8.min.js"></script>
+    <script src="/dashboard/dist/js/persian-datepicker-0.4.5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#stDate').pDatepicker({
+                format: 'YYYY/MM/D',
+                initialValue: false
+            });
+            $('#enDate').pDatepicker({
+                initialValue: false,
+                format: 'YYYY/MM/D',
+            });
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            if (!startDate) {
+                $("#stDate").val("");
+            }
+            if (!endDate) {
+                $("#enDate").val("");
+            }
+        });
+    </script>
+}
+

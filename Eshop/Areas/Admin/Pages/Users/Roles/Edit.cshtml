@@ -1,0 +1,53 @@
+﻿@page "{roleId}"
+@using DomainLayer.Enums
+@model Eshop.Areas.Admin.Pages.Users.Roles.EditModel
+@{
+    ViewData["title"] = "ویرایش نقش";
+    ViewData["selected"] = "UserRoles";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+
+    <div class="box box-primary">
+        <form method="post">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>عنوان :</label>
+                        <input type="text" asp-for="Role.RoleTitle" placeholder="نام" class="form-control" />
+                        <span asp-validation-for="Role.RoleTitle"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label> دسترسی ها :</label>
+                        <div class="row">
+                            @foreach (var item in Enum.GetValues(typeof(Permissions)).Cast<Permissions>())
+                            {
+                                <div class="col-md-6">
+                                    <label>
+                                        @item.ToString().Replace("_", " ")
+                                        <input type="checkbox" value="@item" checked="@((Model.Permissions.Any(p=>item==p)?"checked":null))" name="@nameof(Model.Permissions)" />
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+
+</section>
+

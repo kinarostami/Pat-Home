@@ -1,0 +1,96 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Products.Groups.IndexModel
+@{
+    ViewData["title"] = "مدیریت گروه ها";
+    ViewData["selected"] = "ProductGroups";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/Admin/Products"><i class="fa fa-book"></i>محصولات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/Admin/Products/Groups/Add">
+        <i class="fa fa-plus"></i>
+        افزودن گروه
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered bg-white text-center">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>زیر گروه</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Groups.Where(g => g.ParentId == null))
+                    {
+                        <tr>
+                            <td>@item.GroupTitle</td>
+                            <td>
+                                @if (Model.Groups.Any(g => g.ParentId == item.Id))
+                                {
+
+                                    @foreach (var sub in Model.Groups.Where(g => g.ParentId == item.Id))
+                                    {
+                                        <ul class=" table-bordered" style="box-shadow: 0 0 5px rgba(27, 27, 27, 0.12);padding-right: 5px;">
+                                            <li>
+                                                <div class="text-right" style="padding: 5px;margin: 5px">
+                                                    @sub.GroupTitle
+                                                    <a href="/Admin/Products/Groups/AddSub/@sub.Id" class="btn btn-sm btn-success m-0">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0)" onclick="DeleteProductGroup(@sub.Id)" class="btn btn-sm btn-danger m-0">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                    <a href="/Admin/Products/Groups/Edit/@sub.Id" class="btn btn-sm btn-info">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            @if (Model.Groups.Any(g => g.ParentId == sub.Id))
+                                            {
+                                                foreach (var group in Model.Groups.Where(g=>g.ParentId==sub.Id))
+                                                {
+                                                    <li style="margin-right: 15px; list-style: circle">
+                                                        <div class="text-right" style="padding: 5px;margin: 5px">
+                                                            @group.GroupTitle
+                                                            <a href="javascript:void(0)" onclick="DeleteProductGroup(@group.Id)" class="btn btn-sm btn-danger m-0">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                            <a href="/Admin/Products/Groups/Edit/@group.Id" class="btn btn-sm btn-info">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+
+                                    }
+                                }
+                            <td>
+                                <a href="javascript:void(0)" onclick="DeleteProductGroup(@item.Id)" class="btn btn-sm btn-danger  no-margin">حذف</a>
+                                <a href="/Admin/Products/Groups/Edit/@item.Id" class="btn btn-sm bg-blue no-margin">ویرایش</a>
+                                <a href="/Admin/Products/Groups/AddSub/@item.Id" class="btn btn-sm bg-green no-margin">افزودن زیر گروه</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+

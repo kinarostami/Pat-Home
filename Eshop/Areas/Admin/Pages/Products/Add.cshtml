@@ -1,0 +1,182 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Products.AddModel
+@{
+    ViewData["title"] = "افزودن محصول";
+    ViewData["selected"] = "sellerProducts";
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/Admin/Products">محصولات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-primary">
+        <form method="post" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label>عنوان محصول : </label>
+                        <input type="text" asp-for="ProductModel.Product.ProductTitle" placeholder="نام" class="form-control" />
+                        <span asp-validation-for="ProductModel.Product.ProductTitle"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>  وزن محصول (اگر محصول عسل است ، لازم به وارد کردن این قسمت نیست) : <small>گرم</small> </label>
+                        <input type="number" min="0" value="0" asp-for="ProductModel.Product.Gram" class="form-control" />
+                        <span asp-validation-for="ProductModel.Product.Gram"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> درصد تخفیف :</label>
+                        <input type="number" min="0" value="0" asp-for="ProductModel.Product.DiscountPercentage" class="form-control" />
+                        <span asp-validation-for="ProductModel.Product.DiscountPercentage"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> MetaDescription : <small>توضیحاتی برای موتورهای جستوجو</small> <span class="badge counter">0</span></label>
+                        <textarea id="meta_des" asp-for="ProductModel.Product.MetaDescription" class="form-control"></textarea>
+                        <span asp-validation-for="ProductModel.Product.MetaDescription"></span>
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> توضیحات :</label>
+                        <span asp-validation-for="ProductModel.Product.ProductDescription"></span>
+                        <textarea asp-for="ProductModel.Product.ProductDescription" id="description_full" class="form-control"></textarea>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> دسته بندی اصلی :</label>
+                        <select asp-for="ProductModel.Product.GroupId" class="form-control">
+                            <option value="0">انتخاب کنید</option>
+                            @foreach (var item in Model.MainGroups)
+                            {
+                                <option value="@item.Id">@item.GroupTitle</option>
+
+                            }
+                        </select>
+                        <span asp-validation-for="ProductModel.Product.GroupId"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> دسته بندی دوم :</label>
+                        <select asp-for="ProductModel.Product.ParentGroupId" class="form-control">
+                            <option value="0">انتخاب کنید</option>
+                            @foreach (var item in Model.ParentGroups)
+                            {
+                                <option value="@item.Id">@item.GroupTitle</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProductModel.Product.ParentGroupId"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> دسته بندی سوم :</label>
+                        <select asp-for="ProductModel.Product.SubParentGroupId" class="form-control">
+                            <option value="0">انتخاب کنید</option>
+                            @foreach (var item in Model.SubParentGroups)
+                            {
+                                <option value="@item.Id">@item.GroupTitle</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProductModel.Product.SubParentGroupId"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label>کلمات کلیدی : <small>کلمت را با - از هم جدا کنید</small></label>
+                        <input type="text" asp-for="ProductModel.Product.Tags" class="form-control" />
+                        <span asp-validation-for="ProductModel.Product.Tags"></span>
+
+                    </div>
+                    <div class="col-md-12 form-input">
+                        <label> گالری تصاویر : <b>  600 * 1920</b></label>
+                        <input type="file" accept="image/*" multiple asp-for="ProductModel.Images" class="form-control" />
+                        <span asp-validation-for="ProductModel.Images"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> تصویر اصلی : <b>  600 * 1920</b></label>
+                        <input type="file" accept="image/*" required="" data-val="true" data-val-required="بنر محصول را انتخاب کنید" id="image_selector2" asp-for="ProductModel.CoverImage" class="form-control" />
+                        <span asp-validation-for="ProductModel.CoverImage"></span>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label> تصویر اصلی : (برای صفحه اصلی و دسته بندی) <b>  300 * 300</b></label>
+                        <input type="file" accept="image/*" required="" data-val="true" data-val-required="بنر محصول را انتخاب کنید" id="image_selector" asp-for="ProductModel.CoverImageForBitMap" class="form-control" />
+                        <span asp-validation-for="ProductModel.CoverImageForBitMap"></span>
+                    </div>
+                    <hr class="col-md-12" />
+                    <div class="col-md-12">
+                        <h4>مشخصات محصول</h4>
+
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>عنوان</th>
+                                    <th>مقدار</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                @if (Model.ProductModel == null || !Model.ProductModel.Keys.Any())
+                                {
+                                    <tr>
+                                        <td>
+                                            <input autocomplete="off" type="text" name="ProductModel.Keys" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input autocomplete="off" type="text" name="ProductModel.Values" class="form-control" />
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    for (var i = 0; i < Model.ProductModel.Keys.Count; i++)
+                                    {
+                                        if (i >= Model.ProductModel.Values.Count)
+                                        {
+                                            break;
+                                        }
+                                        <tr>
+                                            <td>
+                                                <input autocomplete="off" type="text" name="ProductModel.Keys" value="@Model.ProductModel.Keys[i]" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input autocomplete="off" type="text" name="ProductModel.Values" value="@Model.ProductModel.Values[i]" class="form-control" />
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        <div class="form-input">
+                            <div class="row m-0">
+                                <input id="rowCount" type="number" placeholder="تعداد مورد نظر را وارد کنید" class="form-control text-right text-right" style="width: 20%; display: inline-block" />
+                                <p style="margin: 10px; display: inline-block">ردیف</p>
+                                <a onclick="AddRow()" class="btn  btn-primary text-white text-center" style="height: 30px; margin: 10px; display: inline"> اضافه کن</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+@section Scripts
+{
+    <script src="~/assets/ckeditor5/build/ckeditor.js"></script>
+    <partial name="Shared/_ValidationScriptsPartial" />
+    <script src="/admin/dist/js/cheditorConfig.js"></script>
+    <script>
+        function changeTitle() {
+            var value = $("#select_").val();
+            if (value === "true") {
+                $("#priceLabel").html("قیمت هر کیلو :");
+            } else {
+                $("#priceLabel").html("قیمت محصول :");
+            }
+        };
+    </script>
+}

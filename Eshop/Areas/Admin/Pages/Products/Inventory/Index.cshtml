@@ -1,0 +1,52 @@
+﻿@page "{productId}"
+@using InventoryManagement.Application.Utilities
+@using Common.Application
+@model Eshop.Areas.Admin.Pages.Products.Inventory.IndexModel
+@{
+    ViewData["title"] = "انبار محصول = " + Model.Product.ProductTitle;
+    ViewData["selected"] = "Products";
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/products">مدیریت محصولات</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<a class="btn btn-success m-3" asp-page="Add" asp-route-productId="@Model.Product.Id">افزودن</a>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>نوع </th>
+                        <th>تعداد موجود</th>
+                        <th>قیمت واحد</th>
+                        <th>
+                            عملیات
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Inventories)
+                    {
+                        <tr>
+                            <td>@item.ProductType.GetNameOfProductType()</td>
+                            <td>@item.Count</td>
+                            <td>@item.Price.TooMan()</td>
+                            <td>
+                                <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">ویرایش</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,82 @@
+﻿@page "{handler?}"
+@using Common.Application.FileUtil
+@model Eshop.Areas.Admin.Pages.Sliders.IndexModel
+@{
+    ViewData["title"] = "مدیریت اسلایدر ها";
+    ViewData["selected"] = "Sliders";
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/Admin/Sliders/Add">
+        <i class="fa fa-plus"></i>
+        افزودن اسلایدر
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>عکس</th>
+                        <th>عنوان</th>
+                        <th>url</th>
+                        <th>وضعیت</th>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Sliders)
+                    {
+                        var url = item.Url;
+                        if (url.Length > 50)
+                        {
+                            url = url.Substring(0, 45) + "...";
+                        }
+
+                        <tr>
+                            <td>
+                                <img style="width: 150px; height: 110px;" src="@Directories.GetSliderImage(item.ImageName)" />
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                <a target="_blank" href="@item.Url">@url</a>
+                            </td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <label class="label label-success">فعال</label>
+                                }
+                                else
+                                {
+                                    <label class="label label-danger">غیرفعال</label>
+                                }
+                            </td>
+                            <td>
+                                <a onclick="deleteSlider(@item.Id)" class="btn btn-sm btn-danger no-margin"><i class="fa fa-trash"></i></a>
+                                <a href="/Admin/Sliders/Edit/@item.Id" class="btn btn-sm bg-blue no-margin"><i class="fa fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Sliders.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="6">موردی برای نمایش وجود ندارد !</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>

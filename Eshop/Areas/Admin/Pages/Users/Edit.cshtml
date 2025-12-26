@@ -1,0 +1,99 @@
+﻿@page "{userId}"
+@using CoreLayer.Services.Users
+@model Eshop.Areas.Admin.Pages.Users.EditModel
+@inject IUserRoleService _role;
+@{
+    ViewData["title"] = "ویرایش کاربر";
+    ViewData["selected"] = "Users";
+    var roles = _role.GetAllRole().Result;
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/admin/users"><i class="fa fa-user-o"></i>کاربران</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box">
+        <form method="post" enctype="multipart/form-data">
+            @Html.HiddenFor(m => m.UserModel.ImageName)
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6 form-input">
+                                <label>نام :</label>
+                                <input type="text" asp-for="UserModel.Name" placeholder="نام" class="form-control" />
+                                <span asp-validation-for="UserModel.Name"></span>
+                            </div>
+                            <div class="col-md-6 form-input">
+                                <label>نام خانوادگی :</label>
+                                <input type="text" asp-for="UserModel.Family" placeholder="نام خانوادگی" class="form-control" />
+                                <span asp-validation-for="UserModel.Family"></span>
+
+                            </div>
+                            <div class="col-md-6 form-input">
+                                <label>ایمیل :</label>
+                                <input type="email" asp-for="UserModel.Email" placeholder="ایمیل" class="form-control" />
+                                <span asp-validation-for="UserModel.Email"></span>
+                            </div>
+                            <div class="col-md-6 form-input">
+                                <label>شماره تلفن :</label>
+                                <input type="text" id="number_input" disabled="disabled" value="@Model.UserModel.PhoneNumber" placeholder=" شماره تلفن" class="form-control" />
+                                <span asp-validation-for="UserModel.PhoneNumber"></span>
+
+                            </div>
+                             <div class="col-md-6 form-input">
+                                <label>کلمه عبور جدید:</label>
+                                <input type="text" placeholder="در صورت وارد نکرن کلمه عبور تغییر نمی کنید" class="form-control" asp-for="UserModel.NewPassword"/>
+                                <span asp-validation-for="UserModel.NewPassword"></span>
+
+                            </div>
+                            <div class="col-md-6 form-select">
+                                <label> نقش های کاربر :</label>
+                                <div class="form-group">
+                                    <select class="form-control js-example-basic-multiple" required="" asp-for="UserModel.UserRoles" multiple="multiple" id="select_">
+                                        @foreach (var item in roles)
+                                        {
+                                            <option value="@item.Id">@item.RoleTitle</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="UserModel.UserRoles"></span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-select">
+                                <label>وضعیت :</label>
+                                <select class="form-control" asp-for="UserModel.IsActive" id="select_1">
+                                    <option value="true">فعال</option>
+                                    <option value="false">غیر فعال</option>
+                                </select>
+                                <span asp-validation-for="UserModel.IsActive"></span>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-input">
+                        <img style="width: 100%; height: 250px" src="/img/users/avatar/@Model.UserModel.ImageName" id="image_target" />
+                        <input type="file" asp-for="UserModel.UserImage" accept="image/*" class="form-control" id="image_selector" />
+                        <span asp-validation-for="UserModel.UserImage"></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+</section>
+@section Scripts
+{
+    <script src="/assets/ckeditor5/build/ckeditor.js"></script>
+    <script src="/dashboard/dist/js/cheditorConfig.js"></script>
+}

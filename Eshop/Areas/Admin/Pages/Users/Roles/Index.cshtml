@@ -1,0 +1,57 @@
+﻿@page "{handler?}"
+@model Eshop.Areas.Admin.Pages.Users.Roles.IndexModel
+@{
+    ViewData["title"] = "مدیریت نقش ها";
+    ViewData["selected"] = "UserRoles";
+    var counter = 1;
+}
+
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" href="/admin/Users/Roles/Add">
+        <i class="fa fa-plus"></i>
+        افزودن نقش
+    </a>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>عنوان</th>
+                        <th>
+                            عملیات
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Roles)
+                    {
+                        <tr>
+                            <td>@counter</td>
+                            <td>@item.RoleTitle</td>
+                            <td>
+                                <a href="/Admin/Users/Roles/Edit/@item.Id" class="btn btn-sm btn-primary">ویرایش</a>
+                                <a onclick="DeleteRole(@item.Id)" class="btn btn-sm btn-danger">حذف</a>
+                            </td>
+                        </tr>
+
+                        counter += 1;
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+

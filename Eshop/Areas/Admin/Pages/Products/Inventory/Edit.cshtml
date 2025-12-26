@@ -1,0 +1,50 @@
+﻿@page "{id}"
+@using InventoryManagement.Domain
+@model Eshop.Areas.Admin.Pages.Products.Inventory.EditModel
+@{
+    ViewData["title"] = "ویرایش موجودی محصول";
+    ViewData["selected"] = "Products";
+}
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li><a href="/Admin/Products"><i class="fa fa-book"></i>محصولات</a></li>
+        <li><a href="/Admin/Products/Inventory/@Model.ProductId">انبار</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-primary">
+        <form method="post">
+            @Html.HiddenFor(m => m.ProductId)
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 form-input">
+                        <label asp-for="Type"></label>
+                        <select class="form-control" id="select_" asp-for="Type">
+                            <option value="@ProductType.YekKio">یک کیلو ای</option>
+                            <option value="@ProductType.NimKilo">نیم کیلو ای</option>
+                            <option value="@ProductType.Unit">محصول تکی</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label asp-for="Count"></label>
+                        <input type="number" asp-for="Count" class="form-control" />
+                    </div>
+                    <div class="col-md-6 form-input">
+                        <label asp-for="Price"></label>
+                        <input type="number" asp-for="Price" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success p-10 pull-left">ثبت اطلاعات</button>
+            </div>
+        </form>
+    </div>
+
+</section>

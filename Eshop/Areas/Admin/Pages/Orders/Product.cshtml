@@ -1,0 +1,253 @@
+﻿@page
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Orders
+@model Eshop.Areas.Admin.Pages.Orders.ProductModel
+@{
+    ViewData["title"] = "سفارشات";
+    ViewData["selected"] = "productOrders";
+}
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+        <small>
+            <strong>تعداد : <span class="text-green" style="font-size:15px">@Model.OrdersModel.EntityCount.ToString("#,0")</span></strong>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <div class="box box-border custom-shadow">
+        <input type="hidden" name="userId" asp-for="OrdersModel.UserId" />
+        <input type="hidden" id="startDate" asp-for="OrdersModel.StartDate" />
+        <input type="hidden" id="endDate" asp-for="OrdersModel.EndDate" />
+
+        <form method="get" id="filter">
+            <input type="hidden" name="pageId" id="pageId" asp-for="OrdersModel.CurrentPage" />
+            <div class="box-header with-border">
+                <h3 class="box-title">فیلتر</h3>
+                <div class="box-tools pull-right">
+                    <a href="/Admin/Orders/Products" class="btn btn-sm btn-danger btn-flat m-0">
+                        حذف
+                        <i class="fa fa-close">
+                        </i>
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat">
+                        فیلتر
+                        <i class="fa fa-search">
+                        </i>
+                    </button>
+                    <button onclick="calenders()" type="button" data-toggle="modal" data-target="#modal" class="btn btn-sm btn-flat btn-success">
+                        گزارش گیری
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="">
+                <div class="table-filter">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label> شماره فاکتور :</label>
+                            <input placeholder="شماره فاکتور : " type="number" class="form-control" asp-for="OrdersModel.Id" name="orderId" />
+                        </div>
+                        <div class="col-md-4">
+                            <label> شماره تلفن کاربر : </label>
+                            <input placeholder="شماره تلفن : " type="text" id="number_input" class="form-control" asp-for="OrdersModel.PhoneNumber" name="phone" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>وضعیت :</label>
+                            <select asp-for="OrdersModel.Status" name="status" class="form-control">
+                                <option value="0">انتخاب کنید</option>
+                                <option value="@OrderStatus.ارسال_شده">@OrderStatus.ارسال_شده.ToString().Replace("_", " ")</option>
+                                <option value="@OrderStatus.تحویل_به_مشتری">@OrderStatus.تحویل_به_مشتری.ToString().Replace("_", " ")</option>
+                                <option value="@OrderStatus.پرداخت_شده">@OrderStatus.پرداخت_شده.ToString().Replace("_", " ")</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 form-input">
+                            <label>از تاریخ :</label>
+                            <div class="input-group date ">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" id="stDate" autocomplete="off" asp-for="OrdersModel.StartDate" name="startDate" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 form-input">
+                            <label>تا تاریخ :</label>
+                            <div class="input-group date ">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" id="enDate" autocomplete="off" asp-for="OrdersModel.EndDate" name="endDate" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-body -->
+    </div>
+    <div class="box box-primary">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover table-bordered mb-2 text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>استان</th>
+                        <th>وضعیت پرداخت</th>
+                        <th>نوع ارسال</th>
+                        <th>تعداد محصول</th>
+                        <th>مبلغ</th>
+                        <td>تخفیف</td>
+                        <th>تاریخ پرداخت</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrdersModel.Orders)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Address.Name</td>
+                            <td>@item.Address.Family</td>
+                            <td>@item.Address.Shire</td>
+                            <td>
+                                @if (item.Status == OrderStatus.ارسال_شده)
+                                {
+                                    <span class="label label-success">
+                                        @item.Status.ToString().Replace("_", " ")
+
+                                    </span>
+                                }
+                                else if (item.Status == OrderStatus.تحویل_به_مشتری)
+                                {
+                                    <span class="label label-info">
+                                        @item.Status.ToString().Replace("_", " ")
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="label label-warning">
+                                        @item.Status.ToString().Replace("_", " ")
+                                    </span>
+                                }
+                            </td>
+                            <td>@item.SendTypeTitle</td>
+                            <td>@item.ItemCount</td>
+                            <td>@item.Price.ToString("#,0") تومان</td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.DiscountTitle))
+                                {
+                                    <span>
+                                        @item.GetDiscount.ToString("#,0") تومان
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>-----</span>
+                                }
+                            </td>
+                            <td>@item.PaymentDate.ToPersianDate()</td>
+                            <td>
+                                <a href="/admin/Orders/Show/@item.Id" class="btn btn-sm btn-info text-white">نمایش</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.OrdersModel.EntityCount == 0)
+                    {
+                        <tr>
+                            <td colspan="11" class="text-center">
+                                موردی برای نمایش وجود ندارد !
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <partial name="Shared/_Paginat" model="Model.OrdersModel" />
+        </div>
+
+    </div>
+
+</section>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <h5>گزارش گیری - Excel</h5>
+        </div>
+        <div class="modal-content">
+            <form method="post" onsubmit="removeLoading()" asp-page-handler="Report">
+                <div class="modal-body">
+                    <div>
+                        <label>از تاریخ :</label>
+                        <div class="input-group date ">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" value="@DateTime.Now.ToPersianDate()" id="startDate" autocomplete="off" name="startDate" class="form-control pull-right" style="border-radius: 0 !important">
+                        </div>
+                    </div>
+                    <div>
+                        <label>تا تاریخ :</label>
+                        <div class="input-group date ">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" value="@DateTime.Now.ToPersianDate()" id="endDate" autocomplete="off" name="endDate" class="form-control pull-right" style="border-radius: 0 !important">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-success">دریافت فایل</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="/admin/dist/js/persian-date-0.1.8.min.js"></script>
+    <script src="/admin/dist/js/persian-datepicker-0.4.5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#stDate').pDatepicker({
+                format: 'YYYY/MM/D',
+                initialValue: false
+            });
+            $('#enDate').pDatepicker({
+                initialValue: false,
+                format: 'YYYY/MM/D',
+            });
+
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            if (!startDate) {
+                $("#stDate").val("");
+            }
+            if (!endDate) {
+                $("#enDate").val("");
+            }
+
+
+        });
+        function calenders(){
+             $('#startDate').pDatepicker({
+                format: 'YYYY/MM/D',
+            });
+            $('#endDate').pDatepicker({
+                format: 'YYYY/MM/D',
+            });
+        }
+        function removeLoading(){
+          setTimeout(()=>{
+              $(".loading").fadeOut();
+          },1000)
+        }
+    </script>
+}

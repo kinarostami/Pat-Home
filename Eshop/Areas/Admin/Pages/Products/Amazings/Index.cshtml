@@ -1,0 +1,119 @@
+﻿@page "{handler?}"
+@using CoreLayer.Services.Products
+@model Eshop.Areas.Admin.Pages.Products.Amazings.IndexModel
+@{
+    ViewData["title"] = "محصولات شگفت انگیز";
+    ViewData["selected"] = "amazings";
+    var counter = 1;
+}
+@inject IProductService _Product;
+
+<section class="content-header">
+    <h1>
+        @ViewData["title"]
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/admin"><i class="fa fa-dashboard"></i> پنل ادمین</a></li>
+        <li class="active">@ViewData["title"]</li>
+    </ol>
+</section>
+<section class="content container-fluid bg-white" id="container">
+    <a class="btn btn-success btn-flat mt-2 mb-4" data-toggle="modal" data-target="#modal">
+        <i class="fa fa-plus"></i>
+        افزودن
+    </a>
+    <div class="box box-border custom-shadow">
+        <form method="get" id="filter">
+            <input type="hidden" />
+            <div class="box-header with-border">
+                <h3 class="box-title">فیلتر</h3>
+                <div class="box-tools pull-right">
+                    <a href="/Admin/Products/Amazings" class="btn btn-sm btn-danger btn-flat m-0">
+                        حذف
+                        <i class="fa fa-close">
+                        </i>
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm btn-flat">
+                        فیلتر
+                        <i class="fa fa-search">
+                        </i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="">
+                <div class="table-filter">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>عنوان محصول :</label>
+                            <input placeholder="نام محصول : " type="text" name="search" value="@ViewData["search"]" class="form-control" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-body -->
+    </div>
+    <div class="box box-warning">
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>عنوان محصول</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AmazingProducts)
+                    {
+                        <tr>
+                            <td>@counter</td>
+                            <td>@item.Product.ProductTitle</td>
+                            <td>
+                                <a class="btn btn-sm btn-danger btn-flat no-margin" onclick="deleteAmazing(@item.Id)"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        counter += 1;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-body">
+                    <div class="alert alert-info" style="text-align: right">
+                        <h4>قبل از افزودن به نکات زیر توجه کنید</h4>
+                        <p><b>1 -</b> محصولات شگفت انگیز به صورت روزانه هستند (فقط تا ساعت 24 روز جاری فعال می باشند)</p>
+                        <p><b>2 -</b> محصولاتی که به لیست شگفت انگیز ها اضافه شدن در لیست پایین وجود ندارند</p>
+                        <p><b>2 -</b> فقط محصولاتی که بیشتر از 5 درصد تخفیف دارند در لیست زیر قابل مشاهده هستند (5% یا بیشتر از 5%)</p>
+                    </div>
+                    <p class="mb-1 text-right">انتخاب محصولات :</p>
+                    <select class="form-control js-example-basic-multiple" required="" name="products" multiple="multiple" id="select_products">
+                       @{
+                           //TODO DISCOUNT
+                       }
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-success">ثبت اطلاعات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $("#select_products").select2({
+            minimumResultsForSearch: 1
+        });
+    </script>
+
+}
