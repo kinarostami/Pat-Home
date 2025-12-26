@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using CoreLayer.Services.Users;
-using Common.Application.SecurityUtil;
+﻿using CoreLayer.Services.Users;
 using CoreLayer.Utilities;
-using DomainLayer.Enums;
 using DomainLayer.Models.Roles;
 using Eshop.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Eshop.Areas.Admin.Pages.Users.Roles
 {

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using CoreLayer.Services.Users;
 using Common.Application.SecurityUtil;
 using CoreLayer.Utilities;
-using DomainLayer.Enums;
 using DomainLayer.Models.Roles;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

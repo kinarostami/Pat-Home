@@ -2,7 +2,6 @@
 using CoreLayer.Services.Products.Groups;
 using Common.Application.SecurityUtil;
 using CoreLayer.Utilities;
-using DomainLayer.Enums;
 using DomainLayer.Models.Products;
 using Eshop.Infrastructure;
 using Microsoft.AspNetCore.Http;

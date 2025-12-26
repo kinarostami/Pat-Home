@@ -1,5 +1,4 @@
 ﻿@page
-@using DomainLayer.Enums
 @using Common.Application.DateUtil
 @using DomainLayer.Models.Tickets
 @model Eshop.Areas.Admin.Pages.Tickets.IndexModel
@@ -97,7 +96,7 @@
                                             break;
                                     }
                                 </td>
-                                <td>@item.CreateDate.ToPersianDate()</td>
+                                <td>@item.CreationDate.ToPersianDate()</td>
                                 <td>@item.TicketMessages.Count()</td>
                                 <td><a href="/Admin/Tickets/show/@item.Id" class="btn btn-sm btn-primary">ورود</a></td>
                             </tr>

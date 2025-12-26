@@ -1,19 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreLayer.Services.Users;
-using Common.Application.SecurityUtil;
+﻿using CoreLayer.Services.Users;
 using CoreLayer.Utilities;
-using DomainLayer.Enums;
 using DomainLayer.Models.Roles;
 using Eshop.Infrastructure;
 using Eshop.Static;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Eshop.Areas.Admin.Pages.Users.Roles
 {
-    [PermissionChecker(DomainLayer.Enums.Permissions.مدیریت_نقش_ها)]
+    //[PermissionChecker(Permissions.مدیریت_نقش_ها)]
 
     public class EditModel : PageUtil
     {
