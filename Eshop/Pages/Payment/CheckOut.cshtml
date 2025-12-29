@@ -1,0 +1,64 @@
+﻿@page
+@model Eshop.Pages.Payment.CheckOutModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#100DD1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    @if (appContext.IsSuccess)
+    {
+<title>پرداخت با موفقیت انجام شد</title>
+    }
+    else
+    {
+        <title>پرداخت لغو شد !</title>
+    }
+    <link rel="icon" href="/img/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/img/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/img/icons/icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/icons/icon-180x180.png">
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+ 
+
+    @if (appContext.IsSuccess)
+    {
+        <div class="order-success-wrapper">
+            <div class="content">
+                <i class="lni lni-checkmark-circle"></i>
+                <h5>پرداخت انجام شد</h5>
+                <p>ما همه جزئیات را از طریق ایمیل به شما اطلاع خواهیم داد. متشکرم!</p>
+                <a class="btn btn-warning mt-3" href="/Profile/Orders">پیگیری سفارش</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="order-error-wrapper">
+            <div class="content">
+                <i class="lni lni-close"></i>
+                <h5>پرداخت لغو شد !</h5>
+                <p>اگرمبلغی از کارت شما کسر شده باشد ظرف 24 ساعت آینده به حساب شما برگشت داده میشود</p>
+                <a class="btn btn-warning mt-3" href="/Payment">دوباره پرداخت کنید</a>
+            </div>
+        </div>
+    }
+
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/default/active.js"></script>
+    <partial name="Shared/_RequestResult" />
+
+</body>
+</html>
