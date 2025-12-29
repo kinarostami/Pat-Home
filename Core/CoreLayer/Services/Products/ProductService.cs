@@ -137,6 +137,7 @@ public class ProductService : BaseService, IProductService
             .Include(p => p.ParentGroup)
             .Include(c => c.Details)
             .ThenInclude(c => c.Order)
+            .OrderBy(x => x.Id)
             .AsQueryable();
         if (!string.IsNullOrEmpty(title))
         {

@@ -1,0 +1,207 @@
+﻿@page "{orderId}/{handler?}"
+@using Common.Application.DateUtil
+@using Common.Application.FileUtil
+@using Common.Application
+@using DomainLayer.Models.Orders
+@model Eshop.Pages.Profile.Orders.ShowModel
+@{
+    ViewData["title"] = $"جزئیات سفارش";
+    ViewData["selected"] = "orders";
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            @if (!Model.Order.IsFinally)
+            {
+                <a href="/Payment" class="btn btn-success mt-2 ml-1">پرداخت و نهایی سازی</a>
+            }
+            <div class="card mt-2">
+                <div class="card-body order-info">
+                    @if (Model.Order.Address != null)
+                    {
+                        <div class="row">
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">تحویل گیرنده</p>
+                                <p class="text-black">@Model.Order.Address.Name @Model.Order.Address.Family</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">تاریخ ثبت سفارش</p>
+                                @if (Model.Order.IsFinally)
+                                {
+                                    <p class="text-black">@Model.Order.PaymentDate.ToPersianDate()</p>
+                                }
+                                else
+                                {
+                                    <p class="text-black">------</p>
+                                }
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">شماره تماس</p>
+                                <p class="text-black">@Model.Order.Address.Phone</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">مبلغ کل</p>
+                                <p class="text-black">@Model.Order.TotalPrice.TooMan()</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">نحوه پرداخت</p>
+                                @if (Model.Order.IsFinally)
+                                {
+                                    @if (Model.Order.ByWallet)
+                                    {
+                                        <p class="text-black">کیف پول</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-black">پرداخت اینترنتی</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-black">------</p>
+                                }
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">شماره سفارش</p>
+                                <p class="text-black">@Model.Order.Id</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <p class="mb-1">ارسال به</p>
+                            <p class="text-black mb-0">@Model.Order.Address.Address</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">تحویل گیرنده</p>
+                                <p class="text-black">------</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">تاریخ ثبت سفارش</p>
+                                <p class="text-black">------</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">شماره تماس</p>
+                                <p class="text-black">------</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">مبلغ کل</p>
+                                <p class="text-black">@Model.Order.TotalPrice.ToString("#,0") تومان</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">نحوه پرداخت</p>
+                                <p class="text-black">------</p>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-4">
+                                <p class="mb-1">شماره سفارش</p>
+                                <p class="text-black">@Model.Order.Id</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <p class="mb-1">ارسال به</p>
+                            <p class="text-black mb-0">------</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card mt-2">
+                <div class="card-body">
+                    @if (Model.Order.IsSend && Model.Order.Status != OrderStatus.تحویل_به_مشتری)
+                    {
+                        <div class="alert alert-info text-black" style="background-color: #00bfd62b !important; font-size: 13px">
+                            محصولات این مرسوله برای شما ارسال شده است لطفا بعد از تحویل گرفتن محصولات روی <a href="javascript:void(0)" onclick="received(@Model.Order.Id)" style="color: #31708f !important;">این لینک</a> کلیک کنید
+
+                        </div>
+                    }
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <p>
+                                وضعیت :
+                                @if (!Model.Order.IsFinally)
+                                {
+                                    <span class="badge badge-success">در انتظار پرداخت</span>
+                                }
+                                else
+                                {
+                                    switch (Model.Order.Status)
+                                    {
+                                        case OrderStatus.ارسال_شده:
+                                            <span class="badge badge-info">ارسال شده</span>
+                                            break;
+                                        case OrderStatus.تحویل_به_مشتری:
+                                            <span class="badge badge-success">تحویل شده</span>
+
+                                            break;
+                                        case OrderStatus.پرداخت_شده:
+                                            <span class="badge badge-primary">درحال پردازش</span>
+                                            break;
+                                    }
+                                }
+                            </p>
+                        </div>
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <p>هزینه ارسال : <b class="text-black ">@Model.Order.ShippingCost.TooMan()</b></p>
+                        </div>
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <p>جمع قیمت کالاهای مرسوله : <b class="text-black text-left">@Model.Order.Price.TooMan()</b></p>
+                        </div>
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <p>کد رهگیری پست: <b class="text-black text-left">@Model.Order.TrackingCode</b></p>
+                        </div>
+                    </div>
+                    <hr />
+                    @foreach (var detail in Model.Order.Details)
+                    {
+                        var link= $"/product/{detail.ProductId}/{detail.Product.ProductTitle.Trim().Replace(" ", "-")}";
+                        <div class="row">
+                            <div class="col-12 col-lg-3 col-md-3 text-center">
+                                <a href="@link"><img style="width: 80%; height: 110px" src="@Directories.GetBitMapProductImage(detail.Product.ImageName)" /></a>
+                            </div>
+                            <div class="col-12 col-lg-9 col-md-9 mt-2">
+                                <a href="@link" class="text-black mb-1 d-block text-bold">@detail.Product.ProductTitle</a>
+                                <p class="mb-1">تعداد : <span class="text-black">@detail.Count</span></p>
+                                <p class="mb-1">وزن واحد : <span class="text-black">@detail.GetWeight()</span></p>
+                                <p class="mb-1"> قیمت واحد : <span class="text-black">@detail.Price.TooMan()</span></p>
+                                <p class="mb-1"> مبلغ کل : <span class="text-black">@detail.TotalPrice.TooMan()</span></p>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="m-0">جزئیات پرداخت</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <p>مبلغ کل کالا ها : <span class="text-black">@Model.Order.Price.TooMan()</span></p>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <p>هزینه ارسال : <span class="text-black">@Model.Order.ShippingCost.TooMan()</span></p>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.Order.DiscountTitle))
+                        {
+                            <div class="col-12 col-md-6 col-lg-6">
+                                <p>تخفیف : <span class="text-black">@Model.Order.GetDiscount.TooMan() - @Model.Order.DiscountTitle</span></p>
+                            </div>
+                        }
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <b>مبلغ کل سفارش : <b class="text-black">@Model.Order.TotalPrice.TooMan()</b></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

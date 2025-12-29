@@ -1,0 +1,76 @@
+﻿@page "{addressId::long}"
+@model Eshop.Pages.Profile.Addresses.EditModel
+@{
+    ViewData["title"] = "ویرایش آدرس ";
+    ViewData["Selected"] = "addresses";
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <div class="card br-0 m-2">
+                <div class="card-body">
+                    <form class="row" method="post" enctype="multipart/form-data">
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <label> استان :</label>
+                            <input type="text" autocomplete="off" class="form-control" asp-for="Address.Shire" />
+                            <span class="text-danger" asp-validation-for="Address.Shire"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <label> شهر :</label>
+                            <input type="text" autocomplete="off" class="form-control" asp-for="Address.City" />
+                            <span class="text-danger" asp-validation-for="Address.City"></span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label> کد پستی :</label>
+                            <input type="text" id="number_input2" autocomplete="off" class="form-control" asp-for="Address.PostalCode" />
+                            <span class="text-danger" asp-validation-for="Address.PostalCode"></span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label> آدرس پستی :</label>
+                            <textarea rows="4" asp-for="Address.Address" class="form-control"></textarea>
+                            <span class="text-danger" asp-validation-for="Address.Address"></span>
+                            <hr />
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-user"></i> <label>نام گیرنده :</label>
+                            <input type="text" autocomplete="off" class="form-control" asp-for="Address.Name" />
+                            <span class="text-danger" asp-validation-for="Address.Name"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-user"></i>
+                            <label>نام خانوادگی گیرنده : </label>
+                            <input type="text" autocomplete="off" class="form-control" asp-for="Address.Family" />
+                            <span class="text-danger" asp-validation-for="Address.Family"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-phone"></i>
+                            <label> شماره موبایل  : </label>
+                            <input type="text" id="number_input" autocomplete="off" class="form-control" asp-for="Address.Phone" />
+                            <span class="text-danger" asp-validation-for="Address.Phone"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-credit-cards"></i>
+                            <label>  کد ملی گیرنده  : </label>
+                            <input type="text" autocomplete="off" class="form-control" asp-for="Address.NationalCode" />
+                            <span class="text-danger" asp-validation-for="Address.NationalCode"></span>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success form-footer">ثبت اطلاعات</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <partial name="Shared/_ValidationScriptsPartial" />
+}
+
+

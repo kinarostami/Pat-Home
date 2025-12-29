@@ -1,0 +1,35 @@
+﻿@using Common.Application.FileUtil
+@using Common.Application
+@model CoreLayer.DTOs.Shop.ProductCardDto
+@{
+    var link = $"/Product/{Model.ProductId}/{Model.Title.Trim().Replace(" ", "-")}";
+}
+<div class="card top-product-card">
+    <div class="card-body">
+        @if (Model.DiscountPercentage != null)
+        {
+            <span class="badge badge-danger">%@Model.DiscountPercentage</span>
+        }
+        <a class="product-thumbnail d-block" href="@link">
+            <img load="lazy" class="mb-2" src="@Directories.GetBitMapProductImage(Model.ProductImage)" alt="@Model.Title">
+        </a>
+        <a class="product-title d-block" href="@link">@Model.Title</a>
+        @if (Model.IsAvailable)
+        {
+            @if (Model.NewPrice != null)
+            {
+                <p class="sale-price">@Model.NewPrice.TooMan()<span class="real-price">@Model.Price.TooMan()</span></p>
+            }
+            else
+            {
+                <p class="sale-price">@Model.Price.TooMan()</p>
+            }
+        }
+        else
+        {
+            <p class="sale-price text-danger">ناموجود</p>
+        }
+       
+        <a class="btn btn-success btn-sm" href="@link"><i class="lni lni-plus"></i></a>
+    </div>
+</div>

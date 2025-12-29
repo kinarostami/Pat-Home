@@ -1,0 +1,36 @@
+﻿@using Common.Application.FileUtil
+@model List<DomainLayer.Models.Sliders.ShopSlider>
+@if (Model.Any())
+{
+    <div class="hero-slides owl-carousel">
+        @foreach (var item in Model)
+        {
+            <div class="single-hero-slide br-0" style="background-image: url('@Directories.GetSliderImage(item.ImageName)')">
+                @if (string.IsNullOrEmpty(item.Title) && string.IsNullOrEmpty(item.Description))
+                {
+                    <a href="@item.Url" target="_blank" class="slide-content h-100 d-flex align-items-center">
+                        <div class="container">
+                            <h4 class="text-white mb-0" data-animation="fadeInUp" data-delay="100ms" data-wow-duration="1000ms">@item.Title</h4>
+                            <p class="text-white" data-animation="fadeInUp" data-delay="400ms" data-wow-duration="1000ms">@item.Description</p>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <div class="slide-content h-100 d-flex align-items-center">
+                        <div class="container">
+                            @if (!string.IsNullOrEmpty(item.Title))
+                            {
+                                <h4 class="text-white mb-0" data-animation="fadeInUp" data-delay="100ms" data-wow-duration="1000ms">@item.Title</h4>
+                            }
+                            <p class="text-white" data-animation="fadeInUp" data-delay="400ms" data-wow-duration="1000ms">@item.Description</p>
+
+                            <a class="btn btn-primary btn-sm" href="@item.Url" data-animation="fadeInUp" data-delay="800ms" data-wow-duration="1000ms">مشاهده</a>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        }
+    </div>
+}

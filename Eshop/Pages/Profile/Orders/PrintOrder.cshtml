@@ -1,0 +1,217 @@
+﻿@page "{orderId}"
+@using Common.Application
+@using Common.Application.DateUtil
+@model Eshop.Pages.Profile.Orders.PrintOrderModel
+@{
+    Layout = null;
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>پرینت فاکتور</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T">
+    <link rel="stylesheet" href="/magAssets/css/style.css">
+    <style>
+        body {
+            font-size: 21px !important;
+        }
+
+        .Fa_direction {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+        .card {
+            margin-bottom: 10px;
+        }
+
+        #OrderTable_tabMob {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="col-md-12 Fa_direction" style="background-color:#FFF; line-height:2">
+        <div class="row mb-3 mt-2">
+            <div class="col-md-9  text-right ">
+                شماره فاکتور:
+                @Model.Order.Id
+            </div>
+            <div class="col-md-3 text-left" style="line-height:2">
+                خانه کتو و گلو
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 style="text-align:right;">
+                            اطلاعات ارسال
+                        </h5>
+                    </div>
+                    <div class="card-body text-right">
+                        @if (Model.Order.Address != null)
+                        {
+                            <span>
+                                آدرس: @Model.Order.Address.Address
+                                <br>
+                                کدپستی: @Model.Order.Address.PostalCode
+                                <br>
+                                شماره همراه: @Model.Order.Address.Phone
+                                <br>
+                                نام گیرنده: @Model.Order.Address.Name
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 style="text-align:right;">
+                            نوع ارسال
+                        </h5>
+                    </div>
+                    <div class="card-body text-right">
+                        <span>
+                            نوع ارسال: @Model.Order.SendTypeTitle
+                            <br>
+                            هزینه: @Model.Order.ShippingCost.TooMan()
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 style="text-align:right;">
+                            هزینه‌ها
+                        </h5>
+                    </div>
+                    <div class="card-body text-right">
+                        <span style="line-height:2; float:left;" class="badge badge-info">   وضعیت فاکتور:  @Model.Order.Status.ToString().Replace("_", " ") </span>
+                        <h6 style="line-height:2">
+                            هزینه ارسال:
+                            <span>
+                                @Model.Order.ShippingCost.TooMan()
+                            </span>
+                        </h6>
+                        @if (!string.IsNullOrWhiteSpace(Model.Order.DiscountTitle))
+                        {
+                            <h6 style="line-height:2">
+                                <span>
+                                    تخفیف  :  @Model.Order.GetDiscount.ToString("#,0") تومان
+                                </span>
+                            </h6>
+                        }
+                        <h6 style="line-height:2">
+                            <span>
+                                جمع سبد  :  @Model.Order.Price.ToString("#,0") تومان
+                            </span>
+                        </h6>
+                        <h6>
+                            <span>
+                                جمع کل: @Model.Order.TotalPrice.TooMan()
+                            </span>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 style="text-align:right;">
+                            اقلام سفارش
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <table id="OrderTable" class="table table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            کالا
+                                        </th>
+                                        <th>
+                                            تاریخ سفارش
+                                        </th>
+                                        <th>
+                                            فروشگاه
+                                        </th>
+                                        <th>
+                                            تعداد
+                                        </th>
+                                        <th>
+                                            قیمت کل
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  
+                                        @foreach (var detail in Model.Order.Details)
+                                        {
+                                            <tr>
+                                                <td style="max-width: 300px">
+                                                    @detail.Product.ProductTitle
+                                                </td>
+                                                <td>
+                                                    @Model.Order.PaymentDate.ToPersianDateTime()
+                                                </td>
+                                                <td>
+                                                    خانه کتو و گلو
+                                                </td>
+                                                <td>
+                                                    x @detail.Count
+                                                </td>
+                                                <td>
+                                                    @detail.TotalPrice.TooMan()
+                                                </td>
+                                            </tr>
+                                        }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/admin/bower_components/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            print($(".Fa_direction"));
+        });
+    </script>
+</body>
+

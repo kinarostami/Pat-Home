@@ -30,7 +30,7 @@ public class UserPointService : BaseService, IUserPointService
         {
             Amount = walletPoint,
             Authority = "Null",
-            Description = $"تبدیل {points} زنبور",
+            Description = $"تبدیل {points} کتو",
             IsFinally = true,
             PayWith = "Manually",
             UserId = userId,
@@ -44,7 +44,7 @@ public class UserPointService : BaseService, IUserPointService
             CreationDate = DateTime.Now,
             UserId = userId,
             Type = WalletType.برداشت,
-            Description = $"تبدیل {points} زنبور به شارژ کیف پول"
+            Description = $"تبدیل {points} کتو به شارژ کیف پول"
         };
         Insert(wallet);
         Insert(point);

@@ -1,0 +1,98 @@
+﻿@page
+@using Common.Application
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Wallets
+@model Eshop.Pages.Profile.Points.IndexModel
+@{
+    ViewData["title"] = $" کتو ها (موجودی : {Model.Points:#,0})";
+    ViewData["Selected"] = "points";
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <div class="alert alert-primary m-2" style="border: 2px dashed">
+                <p class="mb-0">
+                    <i class="fa fa-warning"></i>
+                    برای دریافت کتو باید غذای کتو بخرید <small>(به ازای هر یک کیلو گی یک کتو دریافت می کنید)</small>
+                </p>
+            </div>
+            <div class="alert alert-danger m-2" >
+                <p class="mb-0">
+                    یک کتو = 3 هزار تومان
+                </p>
+            </div>
+            @if (Model.Points < 9)
+            {
+                <div class="alert alert-warning">
+                    <p class="mb-0">برای تبدیل کتو به شارژ کیف پول باید حداقل 9 کتو داشته باشید</p>
+                </div>
+                <button disabled class="btn btn-success ">تبدیل کتو به پول</button>
+
+            }
+            else
+            {
+                <form method="post">
+                    <button type="submit" onclick="return confirm('آیا از انجام عملیات اطمینان دارید ؟')" class="btn btn-success">تبدیل کتو به پول</button>
+                </form>
+            }
+
+
+
+
+
+            <div class="card br-0 m-2 table-responsive pb-1">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center mb-1">
+                        <thead class="head-orange">
+                            <tr>
+                                <th>تعداد</th>
+                                <th>نوع</th>
+                                <th>تاریخ</th>
+                                <th>توضیحات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.UserPoints.Points)
+                            {
+                                <tr>
+                                    <td>@item.Count.SplitNumber()</td>
+                                    <td>
+                                        @if (item.Type == WalletType.واریز)
+                                        {
+                                            <label class="badge badge-success">دریافت</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="badge badge-danger">کسر</label>
+                                        }
+                                    </td>
+                                    <td>@item.CreationDate.ToPersianDate()</td>
+                                    <td>@item.Description</td>
+                                </tr>
+                            }
+
+                            @if (Model.UserPoints.EntityCount < 1)
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center f-13">
+                                        موردی برای نمایش وجود ندارد
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <form id="formFilter">
+                    <input type="hidden" name="pageId" asp-for="UserPoints.CurrentPage" id="pageId" />
+                </form>
+                <partial name="Shared/_Paginat" model="Model.UserPoints" />
+            </div>
+        </div>
+    </div>
+</div>
+

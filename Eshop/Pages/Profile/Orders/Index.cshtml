@@ -1,0 +1,86 @@
+﻿@page
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Orders
+@model Eshop.Pages.Profile.Orders.IndexModel
+@{
+    ViewData["title"] = "سفارشات شما";
+    ViewData["Selected"] = "orders";
+
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <div class="accordian-area-wrapper mt-3">
+                @foreach (var item in Model.Orders.Orders)
+                {
+                    <div class="card accordian-card clearfix br-0 m-2">
+                        <div class="card-body">
+                            <div class="accordion" id="accordionExample">
+                                <p>
+                                    شماره سفارش : <b>@item.Id</b>
+                                </p>
+                                <p>
+                                    قیمت کالاها : <b>@item.Price.ToString("#,0") تومان</b>
+                                </p>
+                                <p>
+                                    تعداد محصولات : <b>@item.ItemCount.ToString("#,0")</b>
+                                </p>
+                                @if (item.Status == OrderStatus.پرداخت_شده)
+                                {
+                                    <p>
+                                        تاریخ پرداخت : @item.PaymentDate.ToPersianDateTime()
+                                    </p>
+                                }
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            <div class="pull-left">
+                                <a href="/Profile/Orders/Show/@item.Id" class="btn btn-primary">نمایش</a>
+                                @if (item.Status == OrderStatus.در_انتظار_پرداخت)
+                                {
+                                    <a href="/CheckOut" class="btn btn-success">پرداخت</a>
+                                }
+                            </div>
+                            <div class="pull-right">
+                                @if (item.Status == OrderStatus.در_انتظار_پرداخت)
+                                {
+                                    <label class="badge badge-warning">
+                                        در انتظار پرداخت
+                                    </label>
+                                }
+                                @if (item.Status == OrderStatus.پرداخت_شده)
+                                {
+                                    <label class="badge badge-success">
+                                        درحال پردازش
+                                    </label>
+                                }
+                                @if (item.Status == OrderStatus.ارسال_شده)
+                                {
+                                    <label class="badge badge-primary">
+                                        ارسال شده
+                                    </label>
+                                }
+                                @if (item.Status == OrderStatus.تحویل_به_مشتری)
+                                {
+                                    <label class="badge badge-primary">
+                                        تحویل شده
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                <form id="formFilter">
+                    <input type="hidden" name="pageId" id="pageId" value="@Model.Orders.CurrentPage" />
+                </form>
+                <partial name="_Paginat" model="Model.Orders" />
+            </div>
+        </div>
+    </div>
+</div>

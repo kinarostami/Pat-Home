@@ -1,0 +1,91 @@
+﻿@page "{handler?}"
+@using Common.Application.DateUtil
+@using DomainLayer.Models.Wallets
+@model Eshop.Pages.Profile.Wallet.IndexModel
+@{
+    ViewData["title"] = $"کیف پول (موجودی : {Model.WalletAmount:#,0} تومان)";
+    ViewData["Selected"] = "Wallet";
+}
+@section Header
+{
+    <div id="chargeWallet" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">شارژ کیف پول</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="col-12">
+                            <label>مبلغ : <small>(تومان)</small></label>
+                            <input autocomplete="off" placeholder="مبلغ مورد نظر خود را وارد کنید" min="1000" type="number" class="form-control" name="amount" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                        <button type="submit" class="btn btn-primary">پرداخت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <a data-toggle="modal" data-target="#chargeWallet" class="btn btn-success m-2">شارژ کیف پول</a>
+            <div class="card br-0 m-2 table-responsive pb-1">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center mb-1">
+                        <thead class="head-orange">
+                            <tr>
+                                <th>مبلغ</th>
+                                <th>نوع</th>
+                                <th>تاریخ</th>
+                                <th>توضیحات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.WalletsFilter.Wallet)
+                            {
+                                <tr>
+                                    <td>@item.Amount.ToString("#,0") تومان</td>
+                                    <td>
+                                        @if (item.WalletType == WalletType.واریز)
+                                        {
+                                            <label class="badge badge-success">واریز</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="badge badge-danger">برداشت</label>
+                                        }
+                                    </td>
+                                    <td>@item.CreationDate.ToPersianDate()</td>
+                                    <td>@item.Description</td>
+                                </tr>
+                            }
+                           
+                            @if (Model.WalletsFilter.EntityCount < 1)
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center f-13">
+                                        موردی برای نمایش وجود ندارد
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <form id="formFilter">
+                    <input type="hidden" name="pageId" asp-for="WalletsFilter.CurrentPage" id="pageId" />
+                </form>
+                <partial name="Shared/_Paginat" model="Model.WalletsFilter" />
+            </div>
+        </div>
+    </div>
+</div>

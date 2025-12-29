@@ -1,0 +1,60 @@
+﻿@page "{handler?}"
+@using Common.Application.DateUtil
+@model Eshop.Pages.Profile.Notifications.IndexModel
+@{
+    ViewData["title"] = "اطلاعیه ها";
+    ViewData["Selected"] = "Notifications";
+}
+@section Header
+{
+    <div id="notificationM" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            @if (Model.Notifications.EntityCount >= 1)
+            {
+                <button type="button" class="btn btn-danger m-2" onclick="deleteNotifications()">حذف همه</button>
+            }
+            <div class="card br-0 m-2">
+                <div class="card-body">
+                    <div class="notification-area pt-3 pb-2">
+                        <div class="list-group">
+                            @foreach (var item in Model.Notifications.Notifications)
+                            {
+                                <a class="list-group-item @((item.IsSeen ? "readed" : "")) d-flex align-items-center" href="#" onclick="ShowBody(@item.Id)">
+                                    <span class="noti-icon"><i class="lni lni-alarm"></i></span>
+                                    <div class="noti-info">
+                                        <h6 class="mb-0">@item.NotificationTitle</h6>
+                                        <span>@item.CreationDate.ToPersianDateTime()</span>
+                                    </div>
+                                </a>
+                            }
+                            @if (Model.Notifications.EntityCount < 1)
+                            {
+
+                                <p class="text-center f-13">
+                                    موردی برای نمایش وجود ندارد
+                                </p>
+
+                            }
+                        </div>
+                    </div>
+                    <form id="formFilter">
+                        <input type="hidden" asp-for="Notifications.CurrentPage" id="pageId" />
+                    </form>
+                    <partial name="Shared/_Paginat" model="Model.Notifications" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

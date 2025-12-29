@@ -1,0 +1,39 @@
+﻿@page "{handler?}"
+@model Eshop.Pages.Profile.IndexModel
+@{
+    ViewData["title"] = "پروفایل";
+    ViewData["Selected"] = "Index";
+
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu"/>
+        <div class="col-12 col-md-8 col-lg-8">
+            <div class="card br-0 m-2">
+                <div class="card-body">
+                    <div class="custom-card-title">
+                        <h6>اطلاعات شخصی</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <label>نام و نام خانوادگی : <span class="text-black">@Model.CurrentUser.Name @Model.CurrentUser.Family</span></label>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <label> شماره تلفن : <span class="text-black">@Model.CurrentUser.PhoneNumber</span></label>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <label>  ایمیل : <span class="text-black">@Model.CurrentUser.Email</span></label>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <label> جنسیت : <span class="text-black">@Model.CurrentUser.Gender.ToString().Replace("_"," ")</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

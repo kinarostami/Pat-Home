@@ -1,0 +1,214 @@
+﻿@page
+@using Common.Application
+@using Common.Application.UserUtil
+@using CoreLayer.Services.Users.UserAddresses
+@model Eshop.Pages.CheckOut.IndexModel
+@inject IUserAddressesService _Addresses
+@{
+    ViewData["title"] = "تکمیل اطلاعات سفارش";
+    var currentAddress = _Addresses.GetActiveAddress(User.GetUserId()).Result;
+}
+
+@section Header
+{
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" id="addresModal" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="modal_address">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="location.reload()" class="btn btn-primary">اتمام عملیات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+
+<section class="container-fluid bkg p-0">
+    <div class="row">
+        <div class="col-lg-12 p-0 mb-3">
+            <div class="bg-package d-flex align-items-center justify-content-center">
+                <div class="breadcrumb radius15">
+                    <ul class="d-flex align-items-center">
+                        <li><a href="/">خانه</a></li>
+                        <svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.8019 6.17453H2.56566C2.00285 6.17453 1.53613 5.70782 1.53613 5.14501C1.53613 4.5822 2.00285 4.11548 2.56566 4.11548H10.8019C11.3647 4.11548 11.8314 4.5822 11.8314 5.14501C11.8314 5.70782 11.3647 6.17453 10.8019 6.17453Z" fill="#292D32" />
+                            <path d="M5.31096 10.2918C5.05014 10.2918 4.78933 10.1958 4.58342 9.98985L0.465311 5.87174C0.067227 5.47366 0.067227 4.81476 0.465311 4.41667L4.58342 0.298563C4.98151 -0.099521 5.64041 -0.099521 6.03849 0.298563C6.43657 0.696647 6.43657 1.35554 6.03849 1.75363L2.64791 5.14421L6.03849 8.53479C6.43657 8.93287 6.43657 9.59177 6.03849 9.98985C5.83258 10.1958 5.57177 10.2918 5.31096 10.2918Z" fill="#292D32" />
+                        </svg>
+                        <li><a href="" class="current">جزئیات پرداخت</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="text-lg-right text-center my-4">
+
+    <div class="container">
+        <div class="card p-5 p-checkout">
+            <div class="row">
+
+                <form method="post" class="contact-form d-flex justify-content-between form-checkout">
+                    @if (Model.IsChanged)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fa fa-warning"></i>
+                            <small>سبد خرید شما بروز رسانی شده است ، قبلا پرداخت حتما آن را بازبینی کنید</small>
+                        </div>
+                    }
+                    @if (currentAddress == null)
+                    {
+                        <div class="alert alert-warning">
+                            شما هیچ آدرس فعالی ندارید.
+                            <a class="btn btn-info w-100" data-toggle="modal" onclick="showAddressPage('/Profile/Addresses/Add')" data-target="#addresModal">ثبت آدرس جدید</a>
+                        </div>
+                    }
+                    else
+                        {
+                        <div class="col-lg-8">
+                            <p class="mb-3">جزئیات صورتحساب:</p>
+                            <input type="hidden" name="addressId" value="@currentAddress.Id" />
+                            <input type="hidden" name="addressId" value="@currentAddress.Id" />
+                            <div class="single-profile-data d-flex align-items-center justify-content-between">
+                                <div class="title d-flex align-items-center">
+                                    <i class="lni lni-user"></i>
+                                    <span>نام و نام خانوادگی</span>
+                                </div>
+                                <div class="data-content">@currentAddress.Name @currentAddress.Family</div>
+                            </div>
+                            <div class="single-profile-data d-flex align-items-center justify-content-between">
+                                <div class="title d-flex align-items-center"><i class="lni lni-phone"></i><span>تلفن</span></div>
+                                <div class="data-content">@currentAddress.Phone</div>
+                            </div>
+                            <div class="single-profile-data d-flex align-items-center justify-content-between">
+                                <div class="title d-flex align-items-center"><i class="lni lni-map-marker"></i><span>آدرس پستی</span></div>
+                                <div class="data-content">@currentAddress.Address</div>
+                            </div>
+                            <a class="btn btn-danger w-100" data-toggle="modal" data-target="#addresModal" onclick="showAddressPage('/Profile/Addresses/Edit/@currentAddress.Id')">ویرایش آدرس</a>
+                        </div>
+                        }
+
+                    <div class="col-lg-4">
+                        <p class="mb-3">سفارش شما: </p>
+                        <div class="bg-title-sidebar radius20 side-category p-4 mb-2">
+                            <div class="shipping-method-choose mb-3">
+                                <div class="card shipping-method-choose-title-card">
+                                    <div class="card-body">
+                                        <h6 class="mb-0">مرسوله شماره 1</h6>
+                                    </div>
+                                </div>
+                                <div class="card shipping-method-choose-card">
+                                    <div class="card-body">
+                                        <div class="shipping-method-choose">
+                                            <ul class="pl-0">
+                                                @foreach (var detail in Model.Order.Details)
+                                                {
+                                                    <li class="shadow p-1 mb-3">
+                                                        <p class="text-black m-0">@detail.Product.ProductTitle @detail.GetWeight()</p>
+                                                        <small>@detail.TotalPrice.TooMan() - @detail.Count عدد</small>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="shipping-method-choose mb-3">
+                                <div class="card shipping-method-choose-title-card bg-success">
+                                    <div class="card-body">
+                                        <h6 class="text-center mb-0 text-white">روش حمل و نقل را انتخاب کنید</h6>
+                                    </div>
+                                </div>
+                                <div class="card shipping-method-choose-card">
+                                    <div class="card-body">
+                                        <div class="shipping-method-choose">
+                                            <ul class="pl-0">
+
+                                                <li>
+                                                    <input id="first" value="@Model.Order.ShippingCost" type="radio" checked="" name="sendType" required="">
+                                                    <label for="first">پست <span>@Model.Order.ShippingCost.TooMan()</span></label>
+                                                    <div class="check"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @* <ul class="list-unstyled">
+
+                                <li>
+                                    محصول
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        جمع جزء
+                                    </div>
+                                </li>
+
+                                <li>
+                                    غذای خشک تیدا
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        800,000   تومان
+                                    </div>
+                                </li>
+
+                                <li>
+                                    کنسرو  تیدا
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        600,000   تومان
+                                    </div>
+                                </li>
+
+                                <hr>
+
+                                <li>
+                                    جمع جزء:
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        1,400,000   تومان
+                                    </div>
+                                </li>
+
+                                <li>
+                                    حمل و نقل:
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        رایگان
+                                    </div>
+                                </li>
+
+                                <li>
+                                    مجموع:
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        1,400,000   تومان
+                                    </div>
+                                </li>
+
+                            </ul> *@
+
+                        </div>
+                        <div class="card cart-amount-area">
+                            <div class="card-body  align-items-center ">
+                                <input type="hidden" id="orderPrice" value="@Model.Order.Price" />
+                                <p class="mb-1">هزینه ارسال : <small id="sendPrice">@Model.Order.ShippingCost.TooMan()</small></p>
+                                <span> قیمت کالاها : <small>@Model.Order.Price.TooMan()</small></span>
+                                <input type="hidden" id="orderPrice" value="@Model.Order.Price" />
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <h5 class="total-price mb-0 col-7">
+                                            <span class="counter">@((Model.Order.TotalPrice).SplitNumber())</span> تومان
+                                        </h5>
+                                        <button type="submit" class="btn btn-warning pull-left btn-sm col-5 h-fit">تأیید و پرداخت</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>

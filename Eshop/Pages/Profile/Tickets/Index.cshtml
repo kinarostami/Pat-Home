@@ -1,0 +1,102 @@
+﻿@page
+@using Common.Application
+@using DomainLayer.Models.Tickets
+@model Eshop.Pages.Profile.Tickets.IndexModel
+@{
+    ViewData["title"] = "تیکت ها";
+    ViewData["Selected"] = "Tickets";
+}
+@section Header
+{
+    <div class="modal fade" id="iModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="form-input ">
+                            <p class="mb-1">عنوان :</p>
+                            <input type="text" autocomplete="off" name="title" required="" maxlength="150" class="form-control" placeholder="عنوان تیکت" />
+                        </div>
+                        <div class="form-input">
+                            <p class="mt-2 mb-1">متن :</p>
+                            <textarea rows="5" class="form-control" name="text"  required="" placeholder="متن پیام"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-success">ثبت تیکت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <a data-toggle="modal" data-target="#iModal" class="btn btn-success mt-3 ml-2">
+                <i class="fa fa-plus"></i>
+                ثبت تیکت جدید
+            </a>
+            @if (Model.TicketsFilter.EntityCount < 1)
+            {
+                <div class="card br-0 m-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <p class="text-center f-15">موردی برای نمایش وجود ندارد</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="accordian-area-wrapper mt-3">
+                    @foreach (var item in Model.TicketsFilter.Tickets)
+                    {
+                        <div class="card accordian-card clearfix br-0 m-2">
+                            <div class="card-body">
+                                <h5 class="accordian-title">
+                                    <a href="/Profile/Tickets/Show/@item.Id">@item.TicketTitle</a>
+                                </h5>
+                                <div class="accordion" id="accordionExample">
+                                    <p class="">
+                                        @{
+                                            var text = item.TicketBody.Subscribe(150);
+                                        }
+                                        @text
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="pull-left">
+                                    <a href="/Profile/Tickets/Show/@item.Id" class="btn btn-primary">نمایش</a>
+                                </div>
+                                <div class="pull-right">
+                                    @switch (item.Status)
+                                    {
+                                        case TicketStatus.Close:
+                                            <span class="badge badge-danger">بسته شده</span>
+                                            break;
+                                        case TicketStatus.Waiting_For_Reply:
+                                            <span class="badge badge-primary">در انتظار پاسخ</span>
+                                            break;
+                                        case TicketStatus.Replied:
+                                            <span class="badge badge-success">پاسخ داده شده</span>
+                                            break;
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            <form id="formFilter">
+                <input type="hidden" name="pageId" asp-for="TicketsFilter.CurrentPage" id="pageId" />
+            </form>
+            <partial name="Shared/_Paginat" model="Model.TicketsFilter" />
+        </div>
+    </div>
+</div>
+

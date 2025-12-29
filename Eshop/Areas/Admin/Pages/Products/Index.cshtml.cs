@@ -9,7 +9,7 @@ using static CoreLayer.Services.Products.IProductService;
 
 namespace Eshop.Areas.Admin.Pages.Products
 {
-    [PermissionChecker(Permissions.مدیریت_محصولات)]
+    //[PermissionChecker(Permissions.مدیریت_محصولات)]
 
     public class IndexModel : PageModel
     {

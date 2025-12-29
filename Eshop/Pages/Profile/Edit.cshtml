@@ -1,0 +1,113 @@
+﻿@page
+@using DomainLayer.Models.Users
+
+@model Eshop.Pages.Profile.EditModel
+@{
+    ViewData["title"] = "ویرایش اطلاعات";
+    ViewData["Selected"] = "Edit";
+    var isShowMessage = TempData["CompleteInfo"] != null;
+}
+@section Meta
+{
+    <link rel="stylesheet" href="~/admin/dist/css/persian-datepicker-0.4.5.min.css" />
+    <style>
+        .datepicker-plot-area{
+            z-index: 100000;
+        }
+    </style>
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <div class="card br-0 m-2">
+                <div class="card-body">
+                    <form class="row" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="EditDto.PhoneNumber" />
+                        <input type="hidden" asp-for="EditDto.ImageName" />
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-user"></i> <label asp-for="EditDto.Name"></label><label> : </label>
+                            <input type="text" autocomplete="off" class="form-control" placeholder="نام خود را وارد کنید" asp-for="EditDto.Name" />
+                            <span class="text-danger" asp-validation-for="EditDto.Name"></span>
+                        </div>
+                        <input type="hidden" asp-for="EditDto.OldEmail" />
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-user"></i> <label asp-for="EditDto.Family"></label><label> : </label>
+                            <input type="text" autocomplete="off" class="form-control" placeholder="نام خانوادگی خود را وارد کنید" asp-for="EditDto.Family" />
+                            <span class="text-danger" asp-validation-for="EditDto.Family"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="lni lni-phone"></i> <label asp-for="EditDto.PhoneNumber"></label><label> : </label>
+                            <input type="text" disabled="disabled" class="form-control" asp-for="EditDto.PhoneNumber" />
+                            <span class="text-danger" asp-validation-for="EditDto.PhoneNumber"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            @{
+                                var emailIcon = "@";
+                            }
+                            @emailIcon <label asp-for="EditDto.Email"></label><label> : </label>
+                            <input type="email" class="form-control" placeholder="ایمیل خود را وارد کنید" autocomplete="off" asp-for="EditDto.Email" />
+                            <span class="text-danger" asp-validation-for="EditDto.Email"></span>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3 col-sm-6">
+                            <i class="fa fa-genderless"></i> <label asp-for="EditDto.Gender"></label><label> : </label>
+                            <select class="form-control" asp-for="EditDto.Gender">
+                                <option value="@UserGender.نا_مشخص">@UserGender.نا_مشخص.ToString().Replace('_', ' ')</option>
+                                <option value="@UserGender.آقا">@UserGender.آقا.ToString().Replace('_', ' ')</option>
+                                <option value="@UserGender.خانم">@UserGender.خانم.ToString().Replace('_', ' ')</option>
+                            </select>
+                            <span class="text-danger" asp-validation-for="EditDto.Gender"></span>
+                        </div>
+                        @if (!Model.EditDto.IsCompleteUProfile)
+                        {
+                            <div class="col-12 col-md-6 mb-3 col-sm-6">
+                                <i class="fa fa-calendar"></i> <label asp-for="EditDto.BirthDate"></label><label> : </label>
+                                <input type="text" required="" id="birthDate" autocomplete="off" asp-for="EditDto.BirthDate" name="birth" class="form-control pull-right" style="border-radius: 0 !important">
+                            </div>
+                        }
+                        <div class="col-12 col-md-6 mb-3 col-sm-6 mb-3">
+                            <i class="fa fa-file-image-o"></i> <label>عکس پروفایل :</label>
+                            <input type="file" accept="image/*" class="form-control" asp-for="EditDto.ImageFile" />
+                            <span class="text-danger" asp-validation-for="EditDto.ImageFile"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success form-footer">ثبت اطلاعات</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @if (!Model.EditDto.IsCompleteUProfile)
+    {
+        <script src="/admin/dist/js/persian-date-0.1.8.min.js"></script>
+        <script src="/admin/dist/js/persian-datepicker-0.4.5.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#birthDate').pDatepicker({
+                    format: 'YYYY/MM/D',
+                    initialValue: false
+                });
+                $("#birthDate").val('');
+
+            });
+        </script>
+    }
+    @if (isShowMessage)
+    {
+        <script>
+            Error("اطلاعات خود را تکمیل کنید", "برای استفاده از امکانات سایت لطفا اطلاعات خود را تکمیل کنید");
+        </script>
+    }
+
+    <partial name="Shared/_ValidationScriptsPartial" />
+}

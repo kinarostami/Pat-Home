@@ -1,0 +1,78 @@
+﻿@page "{ticketId::long}"
+@using Common.Application.DateUtil
+@using Common.Application.UserUtil
+@using DomainLayer.Models.Tickets
+@model Eshop.Pages.Profile.Tickets.ShowModel
+@{
+    ViewData["title"] = Model.Ticket.TicketTitle;
+    ViewData["Selected"] = "Tickets";
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mr-1 ml-1">
+                <div class="card-body">
+                    <div class="support-wrapper py-3">
+
+                        <div class="live-chat-wrapper">
+                            <div class="user-message-content">
+                                <div class="user-message-text">
+                                    <p>@Model.Ticket.TicketBody</p><span>@Model.Ticket.CreationDate.ToPersianDateTime()</span>
+                                </div>
+                            </div>
+                            @foreach (var item in Model.Ticket.TicketMessages)
+                            {
+                                @if (item.UserId == User.GetUserId())
+                                {
+                                    <div class="user-message-content">
+                                        <div class="user-message-text">
+                                            <p>@item.MessageBody</p><span>@item.CreationDate.ToPersianDateTime()</span>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="agent-message-content d-flex align-items-center">
+                                        <div class="agent-thumbnail mr-2"><img src="/img/users/avatar/@item.User.ImageName" alt=""></div>
+                                        <div class="agent-message-text">
+                                            <p>@item.MessageBody </p><span>@item.CreationDate.ToPersianDateTime()</span>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="type-text-form">
+    <form method="post">
+        @if (Model.Ticket.Status == TicketStatus.Close)
+        {
+            <textarea disabled="" class="form-control" name="message" cols="30" rows="10" placeholder="این تیکت بسته شده ؛ اگر سوالی دارید در تیکت جدیدی مطرح کنید"></textarea>
+        }
+        else
+        {
+            <textarea class="form-control" name="message" cols="30" rows="10" placeholder="پیام خود را تایپ کنید ..."></textarea>
+            <button type="submit"><i class="fa fa-paper-plane-o"></i></button>
+        }
+    </form>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".footer-nav-area").remove();
+            if (document.getElementsByClassName('back-button')[0]) {
+                $(".back-button a").attr("href", "/Profile/Tickets");
+            }
+        })
+    </script>
+}

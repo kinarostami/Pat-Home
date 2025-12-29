@@ -1,0 +1,77 @@
+﻿@page "{handler?}"
+@model Eshop.Pages.Profile.Addresses.IndexModel
+@{
+    ViewData["title"] = "آدرس ها";
+    ViewData["Selected"] = "addresses";
+}
+@section Header
+{
+    <partial name="Shared/SideBar/_SideBar" model="true" />
+}
+<div class="profile-wrapper-area py-3">
+    <div class="row">
+        <partial name="Shared/Profile/_Menu" />
+        <div class="col-12 col-md-8 col-lg-8">
+            <a href="/Profile/Addresses/Add" class="btn btn-success mt-3 ml-2">
+                <i class="fa fa-plus"></i>
+                ثبت آدرس جدید
+            </a>
+            @if (!Model.UserAddresses.Any())
+            {
+                <div class="card br-0 m-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <p class="text-center f-15">موردی برای نمایش وجود ندارد</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="accordian-area-wrapper mt-3">
+                    @foreach (var item in Model.UserAddresses)
+                    {
+                        <div class="card accordian-card clearfix br-0 m-2 @((item.IsActive?"active-address":""))">
+                            <div class="card-body">
+                                <h6 class="accordian-title">@item.Address</h6>
+                                <div class="accordion" id="accordionExample">
+                                    <p>
+                                        <i class="fa fa-user"></i>
+                                        @item.Name @item.Family
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-phone"></i>
+                                        @item.Phone
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-address-card"></i>
+                                        @item.NationalCode
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="pull-left">
+                                    <a href="/Profile/Addresses/Edit/@item.Id" class="btn btn-sm btn-info">ویرایش</a>
+                                    <a href="#" onclick="DeleteAddress(@item.Id)" class="btn btn-sm btn-danger">حذف</a>
+                                    @if (!item.IsActive)
+                                    {
+                                        <a href="#" onclick="ActiveAddress(@item.Id)" class="btn btn-sm btn-primary">آدرس پیشفرض</a>
+
+                                    }
+                                </div>
+                                <div class="pull-right">
+                                    @if (item.IsActive)
+                                    {
+                                        <span class="badge badge-success">آدرس پیشفرض</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
